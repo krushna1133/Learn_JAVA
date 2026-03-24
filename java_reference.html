@@ -1,0 +1,3573 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Java Quick Reference</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b0f1a;
+      --surface: #111827;
+      --card: #161f2e;
+      --border: #1e2d45;
+      --accent: #00d4ff;
+      --accent2: #ff6b6b;
+      --accent3: #a8ff78;
+      --accent4: #ffd166;
+      --accent5: #c77dff;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --code-bg: #0d1117;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(135deg, #0b0f1a 0%, #111827 50%, #0b1929 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      backdrop-filter: blur(20px);
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -1px;
+    }
+
+    .logo span {
+      color: var(--accent2);
+    }
+
+    nav {
+      display: flex;
+      gap: 0.3rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    nav button {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      white-space: nowrap;
+      transition: all 0.2s;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    nav button:hover,
+    nav button.active {
+      background: rgba(0, 212, 255, 0.1);
+      color: var(--accent);
+    }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 60px 2rem 40px;
+      background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 212, 255, 0.15), transparent);
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -2px;
+    }
+
+    .hero h1 span {
+      color: var(--accent);
+    }
+
+    .hero p {
+      color: var(--muted);
+      margin-top: 12px;
+      font-size: 1rem;
+      max-width: 600px;
+      margin-inline: auto;
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .badge {
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border: 1px solid;
+    }
+
+    .badge-blue {
+      background: rgba(0, 212, 255, 0.08);
+      color: var(--accent);
+      border-color: rgba(0, 212, 255, 0.3);
+    }
+
+    .badge-red {
+      background: rgba(255, 107, 107, 0.08);
+      color: var(--accent2);
+      border-color: rgba(255, 107, 107, 0.3);
+    }
+
+    .badge-green {
+      background: rgba(168, 255, 120, 0.08);
+      color: var(--accent3);
+      border-color: rgba(168, 255, 120, 0.3);
+    }
+
+    .badge-yellow {
+      background: rgba(255, 209, 102, 0.08);
+      color: var(--accent4);
+      border-color: rgba(255, 209, 102, 0.3);
+    }
+
+    .badge-purple {
+      background: rgba(199, 125, 255, 0.08);
+      color: var(--accent5);
+      border-color: rgba(199, 125, 255, 0.3);
+    }
+
+    /* LAYOUT */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 1.5rem 80px;
+    }
+
+    /* SECTION */
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+      animation: fadeUp 0.4s ease;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin: 40px 0 24px;
+      letter-spacing: -1px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* GRID */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+
+    /* CARD */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 22px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .card:hover {
+      border-color: rgba(0, 212, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .card-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .card-sub {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* CODE */
+    pre,
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+    }
+
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      overflow-x: auto;
+      line-height: 1.7;
+      margin: 8px 0;
+    }
+
+    .kw {
+      color: #ff79c6;
+    }
+
+    .ty {
+      color: #8be9fd;
+    }
+
+    .str {
+      color: #f1fa8c;
+    }
+
+    .num {
+      color: #bd93f9;
+    }
+
+    .cm {
+      color: #6272a4;
+      font-style: italic;
+    }
+
+    .fn {
+      color: #50fa7b;
+    }
+
+    .op {
+      color: #ff5555;
+    }
+
+    .cl {
+      color: #ffb86c;
+    }
+
+    /* DEFINITION BOX */
+    .def-box {
+      background: rgba(0, 212, 255, 0.04);
+      border-left: 3px solid var(--accent);
+      padding: 10px 14px;
+      border-radius: 0 8px 8px 0;
+      margin: 10px 0;
+      font-size: 0.83rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* COMPARISON TABLE */
+    .cmp-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+      margin: 10px 0;
+    }
+
+    .cmp-table th {
+      background: rgba(0, 212, 255, 0.08);
+      color: var(--accent);
+      padding: 8px 12px;
+      text-align: left;
+      border: 1px solid var(--border);
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .cmp-table td {
+      padding: 7px 12px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      vertical-align: top;
+    }
+
+    .cmp-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .yes {
+      color: var(--accent3);
+    }
+
+    .no {
+      color: var(--accent2);
+    }
+
+    .maybe {
+      color: var(--accent4);
+    }
+
+    /* DS DETAIL CARD */
+    .ds-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 16px;
+      transition: border-color 0.2s;
+    }
+
+    .ds-card:hover {
+      border-color: rgba(0, 212, 255, 0.25);
+    }
+
+    .ds-header {
+      padding: 16px 22px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+      user-select: none;
+    }
+
+    .ds-header:hover {
+      border-bottom-color: var(--border);
+    }
+
+    .ds-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ds-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .ds-tag {
+      font-size: 0.65rem;
+      padding: 2px 10px;
+      border-radius: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .ds-body {
+      padding: 0 22px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease, padding 0.3s;
+    }
+
+    .ds-body.open {
+      max-height: 3000px;
+      padding: 20px 22px;
+    }
+
+    .ds-chevron {
+      color: var(--muted);
+      transition: transform 0.3s;
+      font-size: 1.1rem;
+    }
+
+    .ds-chevron.open {
+      transform: rotate(180deg);
+    }
+
+    /* FEATURE ROW */
+    .feature-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 12px 0;
+    }
+
+    .feature-box {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+
+    .feature-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    /* QUICK SYNTAX */
+    .syntax-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 6px 0;
+    }
+
+    .syntax-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      min-width: 110px;
+      font-weight: 600;
+    }
+
+    /* PROGRESS BAR */
+    .perf-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 4px 0;
+    }
+
+    .perf-label {
+      font-size: 0.7rem;
+      min-width: 80px;
+      color: var(--muted);
+    }
+
+    .bar-wrap {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+      height: 6px;
+    }
+
+    .bar-fill {
+      height: 6px;
+      border-radius: 4px;
+    }
+
+    .perf-val {
+      font-size: 0.7rem;
+      min-width: 30px;
+      text-align: right;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* TIPS */
+    .tip {
+      background: rgba(168, 255, 120, 0.04);
+      border: 1px solid rgba(168, 255, 120, 0.15);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.78rem;
+      margin: 6px 0;
+      display: flex;
+      gap: 8px;
+    }
+
+    .tip-icon {
+      color: var(--accent3);
+    }
+
+    .warn {
+      background: rgba(255, 209, 102, 0.04);
+      border: 1px solid rgba(255, 209, 102, 0.15);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.78rem;
+      margin: 6px 0;
+      display: flex;
+      gap: 8px;
+    }
+
+    .warn-icon {
+      color: var(--accent4);
+    }
+
+    /* SEARCH */
+    .search-wrap {
+      position: relative;
+      margin-bottom: 28px;
+    }
+
+    .search-wrap input {
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      font-size: 0.9rem;
+      padding: 12px 16px 12px 44px;
+      border-radius: 12px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-wrap input:focus {
+      border-color: var(--accent);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-row {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        padding: 0 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">Java<span>Ref</span></div>
+    <nav id="mainNav">
+      <button class="active" onclick="showSection('basics',this)">Basics</button>
+      <button onclick="showSection('oop',this)">OOP</button>
+      <button onclick="showSection('arrays',this)">Arrays</button>
+      <button onclick="showSection('ds',this)">Data Structures</button>
+      <button onclick="showSection('collections',this)">Collections</button>
+      <button onclick="showSection('compare',this)">Compare All</button>
+      <button onclick="showSection('exceptions',this)">Exceptions</button>
+      <button onclick="showSection('streams',this)">Streams</button>
+      <button onclick="showSection('fileio',this)">File I/O</button>
+      <button onclick="showSection('userinput',this)">User Input</button>
+      <button onclick="showSection('datetime',this)">Date & Time</button>
+      <button onclick="showSection('wrappers',this)">Wrappers</button>
+      <button onclick="showSection('generics',this)">Generics</button>
+      <button onclick="showSection('enums',this)">Enums</button>
+      <button onclick="showSection('threads',this)">Threads</button>
+      <button onclick="showSection('regex',this)">RegEx</button>
+      <button onclick="showSection('iterator',this)">Iterator</button>
+      <button onclick="showSection('advanced',this)">Advanced</button>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <h1>Java <span>Quick Reference</span></h1>
+    <p>Complete Java reference — all W3Schools topics in one place, simple & memorable.</p>
+    <div class="badge-row">
+      <span class="badge badge-blue">Syntax</span>
+      <span class="badge badge-red">OOP</span>
+      <span class="badge badge-green">DS & Collections</span>
+      <span class="badge badge-yellow">File I/O</span>
+      <span class="badge badge-purple">Threads</span>
+      <span class="badge badge-blue">Generics</span>
+      <span class="badge badge-red">RegEx</span>
+      <span class="badge badge-green">Date & Time</span>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- ============ BASICS ============ -->
+    <div id="basics" class="section active">
+      <div class="section-title">☕ Java Basics</div>
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="basicSearch" placeholder="Search syntax..."
+          oninput="filterCards('basicSearch','basicGrid')" />
+      </div>
+      <div class="grid" id="basicGrid">
+
+        <div class="card" data-search="data types int double boolean char string byte short long float">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(0,212,255,0.1)">🔢</div>
+            <div>
+              <div class="card-title">Data Types</div>
+              <div class="card-sub">Primitives + String</div>
+            </div>
+          </div>
+          <pre><span class="cm">// Integer types</span>
+<span class="ty">byte</span>   b = <span class="num">127</span>;          <span class="cm">// -128 to 127</span>
+<span class="ty">short</span>  s = <span class="num">32000</span>;
+<span class="ty">int</span>    i = <span class="num">100</span>;          <span class="cm">// most common</span>
+<span class="ty">long</span>   l = <span class="num">100L</span>;         <span class="cm">// note: L suffix</span>
+
+<span class="cm">// Decimal types</span>
+<span class="ty">float</span>  f = <span class="num">3.14f</span>;        <span class="cm">// note: f suffix</span>
+<span class="ty">double</span> d = <span class="num">3.14</span>;         <span class="cm">// more precise</span>
+
+<span class="cm">// Other</span>
+<span class="ty">char</span>   c = <span class="str">'A'</span>;
+<span class="ty">boolean</span> flag = <span class="kw">true</span>;
+<span class="ty">String</span> name = <span class="str">"Java"</span>;    <span class="cm">// not primitive!</span></pre>
+        </div>
+
+        <div class="card" data-search="variables var declaration final constant">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(255,107,107,0.1)">📦</div>
+            <div>
+              <div class="card-title">Variables & Constants</div>
+              <div class="card-sub">Declaration & assignment</div>
+            </div>
+          </div>
+          <pre><span class="cm">// Declare & assign</span>
+<span class="ty">int</span> age = <span class="num">25</span>;
+<span class="ty">String</span> city = <span class="str">"Mumbai"</span>;
+
+<span class="cm">// var (Java 10+): type inferred</span>
+<span class="kw">var</span> name = <span class="str">"Ravi"</span>;      <span class="cm">// String inferred</span>
+<span class="kw">var</span> count = <span class="num">10</span>;        <span class="cm">// int inferred</span>
+
+<span class="cm">// Constant: use final</span>
+<span class="kw">final</span> <span class="ty">double</span> PI = <span class="num">3.14159</span>;
+<span class="cm">// PI = 3; ← ERROR! Can't reassign</span>
+
+<span class="cm">// Multiple on one line</span>
+<span class="ty">int</span> x = <span class="num">1</span>, y = <span class="num">2</span>, z = <span class="num">3</span>;</pre>
+        </div>
+
+        <div class="card" data-search="if else switch ternary conditional">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(168,255,120,0.1)">🔀</div>
+            <div>
+              <div class="card-title">Conditions</div>
+              <div class="card-sub">if / else / switch / ternary</div>
+            </div>
+          </div>
+          <pre><span class="cm">// if-else</span>
+<span class="kw">if</span> (age >= <span class="num">18</span>) {
+    System.out.<span class="fn">println</span>(<span class="str">"Adult"</span>);
+} <span class="kw">else if</span> (age >= <span class="num">13</span>) {
+    System.out.<span class="fn">println</span>(<span class="str">"Teen"</span>);
+} <span class="kw">else</span> { System.out.<span class="fn">println</span>(<span class="str">"Child"</span>); }
+
+<span class="cm">// Ternary: condition ? yes : no</span>
+<span class="ty">String</span> result = age >= <span class="num">18</span> ? <span class="str">"Adult"</span> : <span class="str">"Minor"</span>;
+
+<span class="cm">// Switch (classic)</span>
+<span class="kw">switch</span> (day) {
+  <span class="kw">case</span> <span class="str">"Mon"</span>: System.out.<span class="fn">println</span>(<span class="str">"Monday"</span>); <span class="kw">break</span>;
+  <span class="kw">default</span>:  System.out.<span class="fn">println</span>(<span class="str">"Other"</span>);
+}
+
+<span class="cm">// Switch expression (Java 14+)</span>
+<span class="ty">String</span> type = <span class="kw">switch</span> (day) {
+  <span class="kw">case</span> <span class="str">"Sat"</span>, <span class="str">"Sun"</span> -> <span class="str">"Weekend"</span>;
+  <span class="kw">default</span> -> <span class="str">"Weekday"</span>;
+};</pre>
+        </div>
+
+        <div class="card" data-search="for while do loop break continue iterate">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(199,125,255,0.1)">🔁</div>
+            <div>
+              <div class="card-title">Loops</div>
+              <div class="card-sub">for / while / do-while / for-each</div>
+            </div>
+          </div>
+          <pre><span class="cm">// Classic for loop</span>
+<span class="kw">for</span> (<span class="ty">int</span> i = <span class="num">0</span>; i < <span class="num">5</span>; i++) {
+    System.out.<span class="fn">println</span>(i); <span class="cm">// 0,1,2,3,4</span>
+}
+
+<span class="cm">// For-each (enhanced) — best for collections</span>
+<span class="ty">int</span>[] nums = {<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>};
+<span class="kw">for</span> (<span class="ty">int</span> n : nums) { System.out.<span class="fn">println</span>(n); }
+
+<span class="cm">// While loop</span>
+<span class="ty">int</span> n = <span class="num">0</span>;
+<span class="kw">while</span> (n < <span class="num">3</span>) { n++; }
+
+<span class="cm">// Do-while: runs at least ONCE</span>
+<span class="kw">do</span> {
+    System.out.<span class="fn">println</span>(<span class="str">"runs once"</span>);
+} <span class="kw">while</span> (<span class="kw">false</span>);
+
+<span class="cm">// break exits loop, continue skips iteration</span></pre>
+        </div>
+
+        <div class="card" data-search="method function return parameters void static">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(255,209,102,0.1)">⚡</div>
+            <div>
+              <div class="card-title">Methods</div>
+              <div class="card-sub">Declaration, return, overload</div>
+            </div>
+          </div>
+          <pre><span class="cm">// Method syntax: returnType name(params)</span>
+<span class="kw">public static</span> <span class="ty">int</span> <span class="fn">add</span>(<span class="ty">int</span> a, <span class="ty">int</span> b) {
+    <span class="kw">return</span> a + b;
+}
+
+<span class="cm">// void = returns nothing</span>
+<span class="kw">public static</span> <span class="ty">void</span> <span class="fn">greet</span>(<span class="ty">String</span> name) {
+    System.out.<span class="fn">println</span>(<span class="str">"Hi, "</span> + name);
+}
+
+<span class="cm">// Overloading: same name, different params</span>
+<span class="kw">public static</span> <span class="ty">int</span> <span class="fn">add</span>(<span class="ty">int</span> a, <span class="ty">int</span> b, <span class="ty">int</span> c) {
+    <span class="kw">return</span> a + b + c;
+}
+
+<span class="cm">// Calling</span>
+<span class="ty">int</span> sum = <span class="fn">add</span>(<span class="num">3</span>, <span class="num">4</span>);  <span class="cm">// 7</span></pre>
+        </div>
+
+        <div class="card" data-search="string methods length substring concat split replace trim indexOf">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(0,212,255,0.1)">🔤</div>
+            <div>
+              <div class="card-title">String Methods</div>
+              <div class="card-sub">Most used string operations</div>
+            </div>
+          </div>
+          <pre><span class="ty">String</span> s = <span class="str">"Hello Java"</span>;
+
+s.<span class="fn">length</span>();           <span class="cm">// 10</span>
+s.<span class="fn">toUpperCase</span>();      <span class="cm">// "HELLO JAVA"</span>
+s.<span class="fn">toLowerCase</span>();      <span class="cm">// "hello java"</span>
+s.<span class="fn">charAt</span>(<span class="num">0</span>);          <span class="cm">// 'H'</span>
+s.<span class="fn">substring</span>(<span class="num">6</span>);       <span class="cm">// "Java"</span>
+s.<span class="fn">substring</span>(<span class="num">0</span>,<span class="num">5</span>);    <span class="cm">// "Hello"</span>
+s.<span class="fn">contains</span>(<span class="str">"Java"</span>);  <span class="cm">// true</span>
+s.<span class="fn">replace</span>(<span class="str">"Java"</span>,<span class="str">"World"</span>); <span class="cm">// "Hello World"</span>
+s.<span class="fn">split</span>(<span class="str">" "</span>);         <span class="cm">// ["Hello","Java"]</span>
+s.<span class="fn">trim</span>();              <span class="cm">// remove spaces</span>
+s.<span class="fn">equals</span>(<span class="str">"Hello Java"</span>);<span class="cm">// true (use for compare!)</span>
+s.<span class="fn">indexOf</span>(<span class="str">"J"</span>);       <span class="cm">// 6</span>
+<span class="ty">String</span>.<span class="fn">format</span>(<span class="str">"Hi %s"</span>, name); <span class="cm">// format</span></pre>
+        </div>
+
+        <div class="card" data-search="operators arithmetic comparison logical bitwise">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(255,107,107,0.1)">🧮</div>
+            <div>
+              <div class="card-title">Operators</div>
+              <div class="card-sub">Arithmetic, comparison, logical</div>
+            </div>
+          </div>
+          <pre><span class="cm">// Arithmetic</span>
+<span class="num">10</span> + <span class="num">3</span>  <span class="cm">// 13</span>   10 - 3  <span class="cm">// 7</span>
+<span class="num">10</span> * <span class="num">3</span>  <span class="cm">// 30</span>   10 / 3  <span class="cm">// 3 (integer!)</span>
+<span class="num">10</span> % <span class="num">3</span>  <span class="cm">// 1 (modulus / remainder)</span>
+
+<span class="cm">// Comparison (return boolean)</span>
+== != > < >= <=
+
+<span class="cm">// Logical</span>
+&& <span class="cm">// AND: both true</span>
+|| <span class="cm">// OR: either true</span>
+!  <span class="cm">// NOT: flip boolean</span>
+
+<span class="cm">// Assignment shortcuts</span>
+x += <span class="num">5</span>;  <span class="cm">// x = x + 5</span>
+x++;     <span class="cm">// x = x + 1</span>
+x--;     <span class="cm">// x = x - 1</span>
+
+<span class="cm">// Math class</span>
+Math.<span class="fn">pow</span>(<span class="num">2</span>,<span class="num">3</span>) <span class="cm">// 8.0</span>
+Math.<span class="fn">sqrt</span>(<span class="num">9</span>) <span class="cm">// 3.0</span>
+Math.<span class="fn">abs</span>(-<span class="num">5</span>) <span class="cm">// 5</span>
+Math.<span class="fn">max</span>(<span class="num">4</span>,<span class="num">9</span>) <span class="cm">// 9</span></pre>
+        </div>
+
+        <div class="card" data-search="casting type conversion int double char parse">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(168,255,120,0.1)">🔄</div>
+            <div>
+              <div class="card-title">Type Casting</div>
+              <div class="card-sub">Widening, narrowing, parsing</div>
+            </div>
+          </div>
+          <pre><span class="cm">// Widening (auto, safe): smaller → bigger</span>
+<span class="ty">int</span> i = <span class="num">10</span>;
+<span class="ty">double</span> d = i;  <span class="cm">// 10.0 automatically</span>
+
+<span class="cm">// Narrowing (manual): bigger → smaller</span>
+<span class="ty">double</span> pi = <span class="num">3.99</span>;
+<span class="ty">int</span> n = (<span class="ty">int</span>) pi;  <span class="cm">// 3 (decimal dropped!)</span>
+
+<span class="cm">// String → number</span>
+<span class="ty">int</span> age = <span class="ty">Integer</span>.<span class="fn">parseInt</span>(<span class="str">"25"</span>);
+<span class="ty">double</span> price = <span class="ty">Double</span>.<span class="fn">parseDouble</span>(<span class="str">"9.99"</span>);
+
+<span class="cm">// Number → String</span>
+<span class="ty">String</span> s = <span class="ty">String</span>.<span class="fn">valueOf</span>(<span class="num">42</span>);
+<span class="ty">String</span> s2 = <span class="str">""</span> + <span class="num">42</span>;  <span class="cm">// quick trick</span></pre>
+        </div>
+
+      </div><!-- end grid -->
+    </div><!-- end basics -->
+
+    <!-- ============ OOP ============ -->
+    <div id="oop" class="section">
+      <div class="section-title">🏗️ Object-Oriented Programming</div>
+      <div class="grid grid-2">
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(0,212,255,0.1)">🏛️</div>
+            <div>
+              <div class="card-title">Class & Object</div>
+              <div class="card-sub">Blueprint and instance</div>
+            </div>
+          </div>
+          <div class="def-box">A <strong>class</strong> is a blueprint. An <strong>object</strong> is a real instance of
+            that blueprint with actual values.</div>
+          <pre><span class="cm">// Define a class</span>
+<span class="kw">public class</span> <span class="cl">Car</span> {
+    <span class="cm">// Fields (attributes)</span>
+    <span class="ty">String</span> brand;
+    <span class="ty">int</span>    speed;
+
+    <span class="cm">// Constructor</span>
+    <span class="kw">public</span> <span class="fn">Car</span>(<span class="ty">String</span> brand, <span class="ty">int</span> speed) {
+        <span class="kw">this</span>.brand = brand;
+        <span class="kw">this</span>.speed = speed;
+    }
+
+    <span class="cm">// Method</span>
+    <span class="kw">public</span> <span class="ty">void</span> <span class="fn">describe</span>() {
+        System.out.<span class="fn">println</span>(brand + <span class="str">" at "</span> + speed);
+    }
+}
+
+<span class="cm">// Create objects</span>
+<span class="cl">Car</span> c1 = <span class="kw">new</span> <span class="cl">Car</span>(<span class="str">"Toyota"</span>, <span class="num">120</span>);
+c1.<span class="fn">describe</span>(); <span class="cm">// Toyota at 120</span></pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(255,107,107,0.1)">🧬</div>
+            <div>
+              <div class="card-title">Inheritance</div>
+              <div class="card-sub">extends, super, override</div>
+            </div>
+          </div>
+          <div class="def-box">Child class <strong>inherits</strong> all fields & methods from parent. Use
+            <code>extends</code>.
+          </div>
+          <pre><span class="kw">class</span> <span class="cl">Animal</span> {
+    <span class="ty">String</span> name;
+    <span class="kw">public</span> <span class="ty">void</span> <span class="fn">speak</span>() { System.out.<span class="fn">println</span>(<span class="str">"..."</span>); }
+}
+
+<span class="kw">class</span> <span class="cl">Dog</span> <span class="kw">extends</span> <span class="cl">Animal</span> {
+    <span class="cm">// Override parent method</span>
+    <span class="op">@Override</span>
+    <span class="kw">public</span> <span class="ty">void</span> <span class="fn">speak</span>() { System.out.<span class="fn">println</span>(<span class="str">"Woof!"</span>); }
+}
+
+<span class="kw">class</span> <span class="cl">GuideDog</span> <span class="kw">extends</span> <span class="cl">Dog</span> {
+    <span class="kw">public</span> <span class="ty">void</span> <span class="fn">guide</span>() {
+        <span class="kw">super</span>.<span class="fn">speak</span>(); <span class="cm">// call parent speak</span>
+        System.out.<span class="fn">println</span>(<span class="str">"Leading..."</span>);
+    }
+}
+
+<span class="cl">Dog</span> d = <span class="kw">new</span> <span class="cl">Dog</span>();
+d.name = <span class="str">"Rex"</span>;
+d.<span class="fn">speak</span>(); <span class="cm">// Woof!</span></pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(168,255,120,0.1)">🎭</div>
+            <div>
+              <div class="card-title">Interface & Abstract</div>
+              <div class="card-sub">implements, abstract class</div>
+            </div>
+          </div>
+          <pre><span class="cm">// Interface: defines WHAT, not HOW</span>
+<span class="kw">interface</span> <span class="cl">Printable</span> {
+    <span class="ty">void</span> <span class="fn">print</span>();            <span class="cm">// must implement</span>
+    <span class="kw">default</span> <span class="ty">void</span> <span class="fn">preview</span>() { <span class="cm">// optional default</span>
+        System.out.<span class="fn">println</span>(<span class="str">"preview"</span>);
+    }
+}
+
+<span class="kw">class</span> <span class="cl">Document</span> <span class="kw">implements</span> <span class="cl">Printable</span> {
+    <span class="kw">public</span> <span class="ty">void</span> <span class="fn">print</span>() { System.out.<span class="fn">println</span>(<span class="str">"Printing"</span>); }
+}
+
+<span class="cm">// Abstract: partial implementation</span>
+<span class="kw">abstract class</span> <span class="cl">Shape</span> {
+    <span class="kw">abstract</span> <span class="ty">double</span> <span class="fn">area</span>();  <span class="cm">// subclass must implement</span>
+    <span class="ty">void</span> <span class="fn">show</span>() { System.out.<span class="fn">println</span>(<span class="fn">area</span>()); }
+}
+
+<span class="kw">class</span> <span class="cl">Circle</span> <span class="kw">extends</span> <span class="cl">Shape</span> {
+    <span class="ty">double</span> r;
+    <span class="ty">double</span> <span class="fn">area</span>() { <span class="kw">return</span> Math.PI * r * r; }
+}</pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(199,125,255,0.1)">🔒</div>
+            <div>
+              <div class="card-title">Access Modifiers</div>
+              <div class="card-sub">public, private, protected</div>
+            </div>
+          </div>
+          <table class="cmp-table">
+            <tr>
+              <th>Modifier</th>
+              <th>Same Class</th>
+              <th>Same Package</th>
+              <th>Subclass</th>
+              <th>World</th>
+            </tr>
+            <tr>
+              <td><code>public</code></td>
+              <td class="yes">✓</td>
+              <td class="yes">✓</td>
+              <td class="yes">✓</td>
+              <td class="yes">✓</td>
+            </tr>
+            <tr>
+              <td><code>protected</code></td>
+              <td class="yes">✓</td>
+              <td class="yes">✓</td>
+              <td class="yes">✓</td>
+              <td class="no">✗</td>
+            </tr>
+            <tr>
+              <td><code>default</code></td>
+              <td class="yes">✓</td>
+              <td class="yes">✓</td>
+              <td class="no">✗</td>
+              <td class="no">✗</td>
+            </tr>
+            <tr>
+              <td><code>private</code></td>
+              <td class="yes">✓</td>
+              <td class="no">✗</td>
+              <td class="no">✗</td>
+              <td class="no">✗</td>
+            </tr>
+          </table>
+          <pre><span class="kw">class</span> <span class="cl">Person</span> {
+    <span class="kw">private</span>   <span class="ty">String</span> name;  <span class="cm">// only this class</span>
+    <span class="kw">protected</span> <span class="ty">int</span>    age;   <span class="cm">// subclasses too</span>
+    <span class="kw">public</span>    <span class="ty">String</span> id;    <span class="cm">// everyone</span>
+    <span class="cm">// Getter/Setter for private</span>
+    <span class="kw">public</span> <span class="ty">String</span> <span class="fn">getName</span>() { <span class="kw">return</span> name; }
+    <span class="kw">public</span> <span class="ty">void</span> <span class="fn">setName</span>(<span class="ty">String</span> n) { name = n; }
+}</pre>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ ARRAYS ============ -->
+    <div id="arrays" class="section">
+      <div class="section-title">📊 Arrays</div>
+      <div class="grid grid-2">
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(0,212,255,0.1)">1️⃣</div>
+            <div>
+              <div class="card-title">1D Array</div>
+              <div class="card-sub">Fixed-size list of same type</div>
+            </div>
+          </div>
+          <div class="def-box">Array = fixed-size, stores same type, index starts at <strong>0</strong>. Size cannot
+            change after creation.</div>
+          <pre><span class="cm">// Declare + initialize</span>
+<span class="ty">int</span>[] nums = {<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span>};
+<span class="ty">String</span>[] names = <span class="kw">new</span> <span class="ty">String</span>[<span class="num">3</span>]; <span class="cm">// empty, size 3</span>
+
+<span class="cm">// Access element: arrayName[index]</span>
+System.out.<span class="fn">println</span>(nums[<span class="num">0</span>]);  <span class="cm">// 10</span>
+System.out.<span class="fn">println</span>(nums[<span class="num">3</span>]);  <span class="cm">// 40 (last)</span>
+
+<span class="cm">// Change value</span>
+nums[<span class="num">1</span>] = <span class="num">99</span>;  <span class="cm">// now {10,99,30,40}</span>
+
+<span class="cm">// Length</span>
+nums.length   <span class="cm">// 4 (property, not method!)</span>
+
+<span class="cm">// Loop through</span>
+<span class="kw">for</span> (<span class="ty">int</span> n : nums) System.out.<span class="fn">println</span>(n);
+
+<span class="cm">// Sort</span>
+<span class="ty">Arrays</span>.<span class="fn">sort</span>(nums);  <span class="cm">// {10,30,40,99}</span></pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(255,107,107,0.1)">2️⃣</div>
+            <div>
+              <div class="card-title">2D Array (Matrix)</div>
+              <div class="card-sub">Table/grid structure</div>
+            </div>
+          </div>
+          <pre><span class="cm">// Declare 2D array [rows][cols]</span>
+<span class="ty">int</span>[][] matrix = {
+    {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>},
+    {<span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>},
+    {<span class="num">7</span>, <span class="num">8</span>, <span class="num">9</span>}
+};
+
+<span class="cm">// Access: matrix[row][col]</span>
+matrix[<span class="num">0</span>][<span class="num">0</span>]  <span class="cm">// 1 (top-left)</span>
+matrix[<span class="num">1</span>][<span class="num">2</span>]  <span class="cm">// 6</span>
+matrix[<span class="num">2</span>][<span class="num">2</span>]  <span class="cm">// 9 (bottom-right)</span>
+
+<span class="cm">// Change value</span>
+matrix[<span class="num">0</span>][<span class="num">1</span>] = <span class="num">99</span>;
+
+<span class="cm">// Loop through 2D</span>
+<span class="kw">for</span> (<span class="ty">int</span>[] row : matrix) {
+    <span class="kw">for</span> (<span class="ty">int</span> val : row) {
+        System.out.<span class="fn">print</span>(val + <span class="str">" "</span>);
+    }
+    System.out.<span class="fn">println</span>();
+}</pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(168,255,120,0.1)">🛠️</div>
+            <div>
+              <div class="card-title">Arrays Utility</div>
+              <div class="card-sub">java.util.Arrays methods</div>
+            </div>
+          </div>
+          <pre><span class="kw">import</span> java.util.Arrays;
+
+<span class="ty">int</span>[] a = {<span class="num">5</span>,<span class="num">2</span>,<span class="num">8</span>,<span class="num">1</span>};
+
+<span class="ty">Arrays</span>.<span class="fn">sort</span>(a);              <span class="cm">// [1,2,5,8]</span>
+<span class="ty">Arrays</span>.<span class="fn">toString</span>(a);          <span class="cm">// "[1, 2, 5, 8]"</span>
+<span class="ty">Arrays</span>.<span class="fn">fill</span>(a, <span class="num">0</span>);           <span class="cm">// [0,0,0,0]</span>
+<span class="ty">Arrays</span>.<span class="fn">copyOf</span>(a, <span class="num">2</span>);         <span class="cm">// [0,0] first 2</span>
+<span class="ty">Arrays</span>.<span class="fn">copyOfRange</span>(a,<span class="num">1</span>,<span class="num">3</span>);   <span class="cm">// index 1 to 2</span>
+<span class="ty">Arrays</span>.<span class="fn">binarySearch</span>(a, <span class="num">5</span>);  <span class="cm">// index (sort first!)</span>
+<span class="ty">Arrays</span>.<span class="fn">equals</span>(a, b);         <span class="cm">// compare two arrays</span>
+
+<span class="cm">// Convert array to List</span>
+<span class="ty">List</span>&lt;<span class="ty">Integer</span>&gt; list = <span class="ty">Arrays</span>.<span class="fn">asList</span>(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>);</pre>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ DATA STRUCTURES ============ -->
+    <div id="ds" class="section">
+      <div class="section-title">🏗️ Data Structures (Built-in)</div>
+      <p style="color:var(--muted);font-size:0.85rem;margin-bottom:20px;">Click any card to expand full details —
+        declaration, add, remove, access, iterate, and more.</p>
+
+      <!-- Stack -->
+      <div class="ds-card" id="dsStack">
+        <div class="ds-header" onclick="toggleDS('dsStack')">
+          <div class="ds-header-left">
+            <div class="card-icon" style="background:rgba(255,107,107,0.15);width:36px;height:36px;">📚</div>
+            <div>
+              <div class="ds-name">Stack</div>
+              <div style="font-size:0.72rem;color:var(--muted)">LIFO — Last In, First Out</div>
+            </div>
+            <span class="badge badge-red" style="margin-left:12px;">LIFO</span>
+          </div>
+          <span class="ds-chevron">▼</span>
+        </div>
+        <div class="ds-body">
+          <div class="def-box">Stack works like a pile of plates 🍽️ — you can only add or remove from the
+            <strong>top</strong>. Last item added is the first to come out.
+          </div>
+          <div class="feature-row">
+            <div class="feature-box">
+              <div class="feature-label">📌 Declare & Create</div>
+              <pre><span class="kw">import</span> java.util.Stack;
+<span class="ty">Stack</span>&lt;<span class="ty">Integer</span>&gt; stack = <span class="kw">new</span> <span class="ty">Stack</span>&lt;&gt;();</pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">➕ Add (push)</div>
+              <pre>stack.<span class="fn">push</span>(<span class="num">10</span>);
+stack.<span class="fn">push</span>(<span class="num">20</span>);
+stack.<span class="fn">push</span>(<span class="num">30</span>);
+<span class="cm">// Stack: [10, 20, 30] ← top</span></pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">➖ Remove (pop)</div>
+              <pre>stack.<span class="fn">pop</span>();   <span class="cm">// removes & returns 30</span>
+stack.<span class="fn">pop</span>();   <span class="cm">// removes & returns 20</span>
+<span class="cm">// Stack: [10]</span></pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">👁️ Access (peek)</div>
+              <pre>stack.<span class="fn">peek</span>();     <span class="cm">// see top (no remove)</span>
+stack.<span class="fn">isEmpty</span>(); <span class="cm">// false</span>
+stack.<span class="fn">size</span>();    <span class="cm">// 1</span>
+stack.<span class="fn">search</span>(<span class="num">10</span>); <span class="cm">// position from top</span></pre>
+            </div>
+          </div>
+          <div class="tip"><span class="tip-icon">💡</span> Use Stack for: undo operations, browser back button,
+            balancing parentheses, recursion simulation.</div>
+          <div class="warn"><span class="warn-icon">⚠️</span> <code>pop()</code> on empty stack throws
+            <code>EmptyStackException</code>. Always check <code>isEmpty()</code> first!
+          </div>
+        </div>
+      </div>
+
+      <!-- Queue -->
+      <div class="ds-card" id="dsQueue">
+        <div class="ds-header" onclick="toggleDS('dsQueue')">
+          <div class="ds-header-left">
+            <div class="card-icon" style="background:rgba(0,212,255,0.15);width:36px;height:36px;">🚶</div>
+            <div>
+              <div class="ds-name">Queue (LinkedList)</div>
+              <div style="font-size:0.72rem;color:var(--muted)">FIFO — First In, First Out</div>
+            </div>
+            <span class="badge badge-blue" style="margin-left:12px;">FIFO</span>
+          </div>
+          <span class="ds-chevron">▼</span>
+        </div>
+        <div class="ds-body">
+          <div class="def-box">Queue is like a real queue/line 🧍🧍🧍 — first person to join is first to leave. Add to
+            back, remove from front.</div>
+          <div class="feature-row">
+            <div class="feature-box">
+              <div class="feature-label">📌 Declare & Create</div>
+              <pre><span class="kw">import</span> java.util.*;
+<span class="ty">Queue</span>&lt;<span class="ty">String</span>&gt; q = <span class="kw">new</span> <span class="ty">LinkedList</span>&lt;&gt;();</pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">➕ Add (offer/add)</div>
+              <pre>q.<span class="fn">offer</span>(<span class="str">"Alice"</span>);  <span class="cm">// safe add</span>
+q.<span class="fn">offer</span>(<span class="str">"Bob"</span>);
+q.<span class="fn">offer</span>(<span class="str">"Carol"</span>);
+<span class="cm">// Queue: Alice ← Bob ← Carol</span></pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">➖ Remove (poll)</div>
+              <pre>q.<span class="fn">poll</span>();  <span class="cm">// removes Alice (front)</span>
+q.<span class="fn">poll</span>();  <span class="cm">// removes Bob</span>
+<span class="cm">// Queue: Carol</span></pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">👁️ Access (peek)</div>
+              <pre>q.<span class="fn">peek</span>();    <span class="cm">// see front, no remove</span>
+q.<span class="fn">size</span>();    <span class="cm">// 1</span>
+q.<span class="fn">contains</span>(<span class="str">"Carol"</span>); <span class="cm">// true</span></pre>
+            </div>
+          </div>
+          <div class="tip"><span class="tip-icon">💡</span> Use <code>offer()</code> instead of <code>add()</code> — it
+            returns false on failure vs throwing exception. Use <code>poll()</code> vs <code>remove()</code> for same
+            reason.</div>
+        </div>
+      </div>
+
+      <!-- LinkedList as DS -->
+      <div class="ds-card" id="dsLinked">
+        <div class="ds-header" onclick="toggleDS('dsLinked')">
+          <div class="ds-header-left">
+            <div class="card-icon" style="background:rgba(168,255,120,0.15);width:36px;height:36px;">🔗</div>
+            <div>
+              <div class="ds-name">LinkedList (as Deque)</div>
+              <div style="font-size:0.72rem;color:var(--muted)">Doubly linked — add/remove both ends</div>
+            </div>
+            <span class="badge badge-green" style="margin-left:12px;">Deque</span>
+          </div>
+          <span class="ds-chevron">▼</span>
+        </div>
+        <div class="ds-body">
+          <div class="def-box">LinkedList is a chain of nodes 🔗 where each node points to next and previous. Can work
+            as both Stack AND Queue.</div>
+          <div class="feature-row">
+            <div class="feature-box">
+              <div class="feature-label">📌 Declare</div>
+              <pre><span class="ty">LinkedList</span>&lt;<span class="ty">Integer</span>&gt; ll = <span class="kw">new</span> <span class="ty">LinkedList</span>&lt;&gt;();</pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">➕ Add anywhere</div>
+              <pre>ll.<span class="fn">addFirst</span>(<span class="num">1</span>);  <span class="cm">// add to front</span>
+ll.<span class="fn">addLast</span>(<span class="num">2</span>);   <span class="cm">// add to back</span>
+ll.<span class="fn">add</span>(<span class="num">1</span>, <span class="num">99</span>);  <span class="cm">// add at index 1</span></pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">➖ Remove</div>
+              <pre>ll.<span class="fn">removeFirst</span>(); <span class="cm">// remove front</span>
+ll.<span class="fn">removeLast</span>();  <span class="cm">// remove back</span>
+ll.<span class="fn">remove</span>(<span class="num">0</span>);     <span class="cm">// remove at index</span></pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">👁️ Access</div>
+              <pre>ll.<span class="fn">get</span>(<span class="num">0</span>);      <span class="cm">// by index (slow!)</span>
+ll.<span class="fn">getFirst</span>(); <span class="cm">// O(1)</span>
+ll.<span class="fn">getLast</span>();  <span class="cm">// O(1)</span>
+ll.<span class="fn">set</span>(<span class="num">0</span>, <span class="num">50</span>); <span class="cm">// change at index</span></pre>
+            </div>
+          </div>
+          <div class="warn"><span class="warn-icon">⚠️</span> <code>get(index)</code> is O(n) in LinkedList — it
+            traverses from start. Use ArrayList for random access!</div>
+        </div>
+      </div>
+
+      <!-- PriorityQueue -->
+      <div class="ds-card" id="dsPQ">
+        <div class="ds-header" onclick="toggleDS('dsPQ')">
+          <div class="ds-header-left">
+            <div class="card-icon" style="background:rgba(255,209,102,0.15);width:36px;height:36px;">🎯</div>
+            <div>
+              <div class="ds-name">PriorityQueue</div>
+              <div style="font-size:0.72rem;color:var(--muted)">Always removes the smallest element first</div>
+            </div>
+            <span class="badge badge-yellow" style="margin-left:12px;">Min-Heap</span>
+          </div>
+          <span class="ds-chevron">▼</span>
+        </div>
+        <div class="ds-body">
+          <div class="def-box">PriorityQueue always removes the <strong>smallest</strong> (or highest priority) element
+            first — regardless of insertion order. Internally uses a heap.</div>
+          <div class="feature-row">
+            <div class="feature-box">
+              <div class="feature-label">📌 Declare</div>
+              <pre><span class="ty">PriorityQueue</span>&lt;<span class="ty">Integer</span>&gt; pq = <span class="kw">new</span> <span class="ty">PriorityQueue</span>&lt;&gt;();
+<span class="cm">// Max-heap (largest first):</span>
+<span class="ty">PriorityQueue</span>&lt;<span class="ty">Integer</span>&gt; max =
+  <span class="kw">new</span> <span class="ty">PriorityQueue</span>&lt;&gt;(<span class="ty">Collections</span>.reverseOrder());</pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">➕ Add</div>
+              <pre>pq.<span class="fn">offer</span>(<span class="num">30</span>);
+pq.<span class="fn">offer</span>(<span class="num">10</span>);
+pq.<span class="fn">offer</span>(<span class="num">20</span>);</pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">➖ Remove (poll)</div>
+              <pre>pq.<span class="fn">poll</span>();  <span class="cm">// returns 10 (smallest!)</span>
+pq.<span class="fn">poll</span>();  <span class="cm">// returns 20</span>
+pq.<span class="fn">poll</span>();  <span class="cm">// returns 30</span></pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">👁️ Access</div>
+              <pre>pq.<span class="fn">peek</span>();    <span class="cm">// see min without removing</span>
+pq.<span class="fn">size</span>();    <span class="cm">// count</span>
+pq.<span class="fn">contains</span>(<span class="num">10</span>); <span class="cm">// check exists</span></pre>
+            </div>
+          </div>
+          <div class="tip"><span class="tip-icon">💡</span> Use PriorityQueue for: Dijkstra's algorithm, scheduling
+            tasks by priority, finding K smallest/largest elements.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ============ COLLECTIONS ============ -->
+    <div id="collections" class="section">
+      <div class="section-title">📦 Collections Framework</div>
+      <p style="color:var(--muted);font-size:0.85rem;margin-bottom:20px;">Click to expand each collection — all
+        operations with examples.</p>
+
+      <!-- ArrayList -->
+      <div class="ds-card" id="colAL">
+        <div class="ds-header" onclick="toggleDS('colAL')">
+          <div class="ds-header-left">
+            <div class="card-icon" style="background:rgba(0,212,255,0.15);width:36px;height:36px;">📋</div>
+            <div>
+              <div class="ds-name">ArrayList</div>
+              <div style="font-size:0.72rem;color:var(--muted)">Dynamic array — ordered, allows duplicates</div>
+            </div>
+            <span class="badge badge-blue" style="margin-left:12px;">Most Used</span>
+          </div><span class="ds-chevron">▼</span>
+        </div>
+        <div class="ds-body">
+          <div class="def-box">ArrayList = resizable array. <strong>Best for: reading by index</strong>. Maintains
+            insertion order. Allows duplicates and null.</div>
+          <div class="feature-row">
+            <div class="feature-box">
+              <div class="feature-label">📌 Declare</div>
+              <pre><span class="kw">import</span> java.util.ArrayList;
+<span class="ty">ArrayList</span>&lt;<span class="ty">String</span>&gt; list = <span class="kw">new</span> <span class="ty">ArrayList</span>&lt;&gt;();
+<span class="cm">// With initial data:</span>
+<span class="ty">ArrayList</span>&lt;<span class="ty">Integer</span>&gt; nums =
+  <span class="kw">new</span> <span class="ty">ArrayList</span>&lt;&gt;(List.of(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>));</pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">➕ Add elements</div>
+              <pre>list.<span class="fn">add</span>(<span class="str">"Apple"</span>);       <span class="cm">// add to end</span>
+list.<span class="fn">add</span>(<span class="num">0</span>, <span class="str">"Mango"</span>);  <span class="cm">// add at index 0</span>
+list.<span class="fn">addAll</span>(otherList);  <span class="cm">// add all from list</span></pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">➖ Remove elements</div>
+              <pre>list.<span class="fn">remove</span>(<span class="str">"Apple"</span>); <span class="cm">// remove by value</span>
+list.<span class="fn">remove</span>(<span class="num">0</span>);       <span class="cm">// remove at index 0</span>
+list.<span class="fn">clear</span>();          <span class="cm">// remove ALL</span></pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">✏️ Change value</div>
+              <pre>list.<span class="fn">set</span>(<span class="num">0</span>, <span class="str">"Banana"</span>); <span class="cm">// replace index 0</span></pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">👁️ Access / Read</div>
+              <pre>list.<span class="fn">get</span>(<span class="num">0</span>);           <span class="cm">// get by index → O(1)</span>
+list.<span class="fn">size</span>();           <span class="cm">// count</span>
+list.<span class="fn">contains</span>(<span class="str">"Apple"</span>);<span class="cm">// boolean</span>
+list.<span class="fn">indexOf</span>(<span class="str">"Apple"</span>); <span class="cm">// first index</span>
+list.<span class="fn">isEmpty</span>();        <span class="cm">// boolean</span></pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">🔁 Iterate</div>
+              <pre><span class="kw">for</span> (<span class="ty">String</span> s : list) System.out.<span class="fn">println</span>(s);
+list.<span class="fn">forEach</span>(s -> System.out.<span class="fn">println</span>(s));
+<span class="ty">Collections</span>.<span class="fn">sort</span>(list);  <span class="cm">// sort it</span></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LinkedList Collection -->
+      <div class="ds-card" id="colLL">
+        <div class="ds-header" onclick="toggleDS('colLL')">
+          <div class="ds-header-left">
+            <div class="card-icon" style="background:rgba(168,255,120,0.15);width:36px;height:36px;">🔗</div>
+            <div>
+              <div class="ds-name">LinkedList (as List)</div>
+              <div style="font-size:0.72rem;color:var(--muted)">Doubly linked nodes — fast add/remove at ends</div>
+            </div>
+            <span class="badge badge-green" style="margin-left:12px;">List+Deque</span>
+          </div><span class="ds-chevron">▼</span>
+        </div>
+        <div class="ds-body">
+          <div class="def-box">LinkedList implements both <code>List</code> and <code>Deque</code>. <strong>Best for:
+              frequent insert/delete</strong> in middle or at ends.</div>
+          <div class="feature-row">
+            <div class="feature-box">
+              <div class="feature-label">📌 Declare</div>
+              <pre><span class="ty">LinkedList</span>&lt;<span class="ty">String</span>&gt; ll = <span class="kw">new</span> <span class="ty">LinkedList</span>&lt;&gt;();</pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">➕ Add</div>
+              <pre>ll.<span class="fn">add</span>(<span class="str">"A"</span>);       <span class="cm">// end</span>
+ll.<span class="fn">addFirst</span>(<span class="str">"Z"</span>); <span class="cm">// front</span>
+ll.<span class="fn">addLast</span>(<span class="str">"B"</span>);  <span class="cm">// back</span></pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">➖ Remove</div>
+              <pre>ll.<span class="fn">remove</span>(<span class="str">"A"</span>);    <span class="cm">// by value</span>
+ll.<span class="fn">removeFirst</span>(); <span class="cm">// front → O(1)</span>
+ll.<span class="fn">removeLast</span>();  <span class="cm">// back → O(1)</span></pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">✏️ Change value</div>
+              <pre>ll.<span class="fn">set</span>(<span class="num">0</span>, <span class="str">"X"</span>); <span class="cm">// replace at index</span></pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">👁️ Access</div>
+              <pre>ll.<span class="fn">get</span>(<span class="num">2</span>);      <span class="cm">// by index → O(n)</span>
+ll.<span class="fn">getFirst</span>(); <span class="cm">// O(1)</span>
+ll.<span class="fn">getLast</span>();  <span class="cm">// O(1)</span></pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">🔁 Iterate</div>
+              <pre><span class="kw">for</span> (<span class="ty">String</span> s : ll) System.out.<span class="fn">println</span>(s);</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HashMap -->
+      <div class="ds-card" id="colHM">
+        <div class="ds-header" onclick="toggleDS('colHM')">
+          <div class="ds-header-left">
+            <div class="card-icon" style="background:rgba(255,209,102,0.15);width:36px;height:36px;">🗺️</div>
+            <div>
+              <div class="ds-name">HashMap</div>
+              <div style="font-size:0.72rem;color:var(--muted)">Key-Value pairs — no order, O(1) access</div>
+            </div>
+            <span class="badge badge-yellow" style="margin-left:12px;">Key-Value</span>
+          </div><span class="ds-chevron">▼</span>
+        </div>
+        <div class="ds-body">
+          <div class="def-box">HashMap stores data as <strong>key → value</strong> pairs. Keys are unique. <strong>No
+              guaranteed order</strong>. Fast lookup O(1) average.</div>
+          <div class="feature-row">
+            <div class="feature-box">
+              <div class="feature-label">📌 Declare</div>
+              <pre><span class="kw">import</span> java.util.HashMap;
+<span class="ty">HashMap</span>&lt;<span class="ty">String</span>, <span class="ty">Integer</span>&gt; map =
+  <span class="kw">new</span> <span class="ty">HashMap</span>&lt;&gt;();</pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">➕ Add (put)</div>
+              <pre>map.<span class="fn">put</span>(<span class="str">"Alice"</span>, <span class="num">90</span>);
+map.<span class="fn">put</span>(<span class="str">"Bob"</span>,   <span class="num">85</span>);
+map.<span class="fn">put</span>(<span class="str">"Alice"</span>, <span class="num">95</span>); <span class="cm">// overwrites!</span></pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">➖ Remove</div>
+              <pre>map.<span class="fn">remove</span>(<span class="str">"Bob"</span>);       <span class="cm">// by key</span>
+map.<span class="fn">remove</span>(<span class="str">"Alice"</span>, <span class="num">95</span>); <span class="cm">// key+value</span>
+map.<span class="fn">clear</span>();              <span class="cm">// remove all</span></pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">✏️ Change value</div>
+              <pre>map.<span class="fn">put</span>(<span class="str">"Alice"</span>, <span class="num">100</span>); <span class="cm">// put again</span>
+map.<span class="fn">replace</span>(<span class="str">"Alice"</span>, <span class="num">99</span>);</pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">👁️ Access</div>
+              <pre>map.<span class="fn">get</span>(<span class="str">"Alice"</span>);          <span class="cm">// 95</span>
+map.<span class="fn">getOrDefault</span>(<span class="str">"X"</span>, <span class="num">0</span>); <span class="cm">// safe!</span>
+map.<span class="fn">containsKey</span>(<span class="str">"Bob"</span>);   <span class="cm">// true/false</span>
+map.<span class="fn">containsValue</span>(<span class="num">85</span>);   <span class="cm">// true/false</span>
+map.<span class="fn">size</span>();</pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">🔁 Iterate</div>
+              <pre><span class="cm">// Keys</span>
+<span class="kw">for</span> (<span class="ty">String</span> key : map.<span class="fn">keySet</span>()) ...
+<span class="cm">// Values</span>
+<span class="kw">for</span> (<span class="ty">Integer</span> val : map.<span class="fn">values</span>()) ...
+<span class="cm">// Both (best way)</span>
+<span class="kw">for</span> (<span class="kw">var</span> e : map.<span class="fn">entrySet</span>())
+  System.out.<span class="fn">println</span>(e.<span class="fn">getKey</span>()+<span class="str">"="</span>+e.<span class="fn">getValue</span>());</pre>
+            </div>
+          </div>
+          <div class="tip"><span class="tip-icon">💡</span> Increment counter pattern:
+            <code>map.put(key, map.getOrDefault(key, 0) + 1);</code> — very common in coding!
+          </div>
+        </div>
+      </div>
+
+      <!-- LinkedHashMap -->
+      <div class="ds-card" id="colLHM">
+        <div class="ds-header" onclick="toggleDS('colLHM')">
+          <div class="ds-header-left">
+            <div class="card-icon" style="background:rgba(0,212,255,0.15);width:36px;height:36px;">🗺️</div>
+            <div>
+              <div class="ds-name">LinkedHashMap</div>
+              <div style="font-size:0.72rem;color:var(--muted)">HashMap + maintains insertion order</div>
+            </div>
+            <span class="badge badge-blue" style="margin-left:12px;">Ordered Map</span>
+          </div><span class="ds-chevron">▼</span>
+        </div>
+        <div class="ds-body">
+          <div class="def-box">Same as HashMap but <strong>remembers the order you inserted items</strong>. Slightly
+            slower than HashMap due to linked list overhead.</div>
+          <div class="feature-row">
+            <div class="feature-box">
+              <div class="feature-label">📌 Declare</div>
+              <pre><span class="ty">LinkedHashMap</span>&lt;<span class="ty">String</span>, <span class="ty">Integer</span>&gt; lhm =
+  <span class="kw">new</span> <span class="ty">LinkedHashMap</span>&lt;&gt;();</pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">➕ Add / ✏️ Change</div>
+              <pre>lhm.<span class="fn">put</span>(<span class="str">"One"</span>, <span class="num">1</span>);
+lhm.<span class="fn">put</span>(<span class="str">"Two"</span>, <span class="num">2</span>);
+lhm.<span class="fn">put</span>(<span class="str">"Three"</span>, <span class="num">3</span>);
+lhm.<span class="fn">replace</span>(<span class="str">"Two"</span>, <span class="num">22</span>);</pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">➖ Remove / 👁️ Access</div>
+              <pre>lhm.<span class="fn">remove</span>(<span class="str">"One"</span>);
+lhm.<span class="fn">get</span>(<span class="str">"Two"</span>); <span class="cm">// 22</span>
+<span class="cm">// Iterates in insertion order:</span>
+<span class="cm">// Two=22, Three=3</span></pre>
+            </div>
+          </div>
+          <div class="tip"><span class="tip-icon">💡</span> Use LinkedHashMap when you need map + order (e.g., LRU
+            cache, processing entries in insertion sequence).</div>
+        </div>
+      </div>
+
+      <!-- TreeMap -->
+      <div class="ds-card" id="colTM">
+        <div class="ds-header" onclick="toggleDS('colTM')">
+          <div class="ds-header-left">
+            <div class="card-icon" style="background:rgba(199,125,255,0.15);width:36px;height:36px;">🌳</div>
+            <div>
+              <div class="ds-name">TreeMap</div>
+              <div style="font-size:0.72rem;color:var(--muted)">Sorted Map — keys always sorted</div>
+            </div>
+            <span class="badge badge-purple" style="margin-left:12px;">Sorted</span>
+          </div><span class="ds-chevron">▼</span>
+        </div>
+        <div class="ds-body">
+          <div class="def-box">TreeMap keeps keys in <strong>sorted (ascending) order</strong> always. Based on
+            Red-Black tree. O(log n) for all operations.</div>
+          <div class="feature-row">
+            <div class="feature-box">
+              <div class="feature-label">📌 Declare</div>
+              <pre><span class="ty">TreeMap</span>&lt;<span class="ty">String</span>, <span class="ty">Integer</span>&gt; tm =
+  <span class="kw">new</span> <span class="ty">TreeMap</span>&lt;&gt;();
+<span class="cm">// Reverse order:</span>
+<span class="ty">TreeMap</span>&lt;<span class="ty">String</span>,<span class="ty">Integer</span>&gt; rev =
+  <span class="kw">new</span> <span class="ty">TreeMap</span>&lt;&gt;(<span class="ty">Collections</span>.reverseOrder());</pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">➕ Add / ✏️ Change</div>
+              <pre>tm.<span class="fn">put</span>(<span class="str">"Banana"</span>, <span class="num">3</span>);
+tm.<span class="fn">put</span>(<span class="str">"Apple"</span>,  <span class="num">5</span>);
+tm.<span class="fn">put</span>(<span class="str">"Cherry"</span>, <span class="num">1</span>);
+<span class="cm">// Stored: Apple, Banana, Cherry</span>
+tm.<span class="fn">replace</span>(<span class="str">"Apple"</span>, <span class="num">10</span>);</pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">➖ Remove / 👁️ Extra methods</div>
+              <pre>tm.<span class="fn">remove</span>(<span class="str">"Banana"</span>);
+tm.<span class="fn">firstKey</span>(); <span class="cm">// "Apple" (smallest)</span>
+tm.<span class="fn">lastKey</span>();  <span class="cm">// "Cherry" (largest)</span>
+tm.<span class="fn">floorKey</span>(<span class="str">"B"</span>);  <span class="cm">// "Apple"</span>
+tm.<span class="fn">ceilingKey</span>(<span class="str">"B"</span>); <span class="cm">// "Cherry"</span>
+tm.<span class="fn">headMap</span>(<span class="str">"C"</span>);   <span class="cm">// keys before C</span>
+tm.<span class="fn">tailMap</span>(<span class="str">"B"</span>);   <span class="cm">// keys from B</span></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HashSet -->
+      <div class="ds-card" id="colHS">
+        <div class="ds-header" onclick="toggleDS('colHS')">
+          <div class="ds-header-left">
+            <div class="card-icon" style="background:rgba(255,107,107,0.15);width:36px;height:36px;">🎯</div>
+            <div>
+              <div class="ds-name">HashSet</div>
+              <div style="font-size:0.72rem;color:var(--muted)">Unique values — no duplicates, no order</div>
+            </div>
+            <span class="badge badge-red" style="margin-left:12px;">No Duplicates</span>
+          </div><span class="ds-chevron">▼</span>
+        </div>
+        <div class="ds-body">
+          <div class="def-box">HashSet stores <strong>unique values only</strong>. Adding a duplicate is silently
+            ignored. <strong>No order</strong>. O(1) for add/remove/contains.</div>
+          <div class="feature-row">
+            <div class="feature-box">
+              <div class="feature-label">📌 Declare</div>
+              <pre><span class="kw">import</span> java.util.HashSet;
+<span class="ty">HashSet</span>&lt;<span class="ty">String</span>&gt; set = <span class="kw">new</span> <span class="ty">HashSet</span>&lt;&gt;();</pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">➕ Add elements</div>
+              <pre>set.<span class="fn">add</span>(<span class="str">"Apple"</span>);  <span class="cm">// true</span>
+set.<span class="fn">add</span>(<span class="str">"Mango"</span>);  <span class="cm">// true</span>
+set.<span class="fn">add</span>(<span class="str">"Apple"</span>);  <span class="cm">// false! duplicate ignored</span>
+<span class="cm">// Set: {Apple, Mango}</span></pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">➖ Remove</div>
+              <pre>set.<span class="fn">remove</span>(<span class="str">"Apple"</span>); <span class="cm">// by value</span>
+set.<span class="fn">clear</span>();          <span class="cm">// remove all</span></pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">👁️ Access / Check</div>
+              <pre>set.<span class="fn">contains</span>(<span class="str">"Mango"</span>); <span class="cm">// true → O(1)</span>
+set.<span class="fn">size</span>();
+set.<span class="fn">isEmpty</span>();
+<span class="cm">// No get(index)! No order!</span></pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">🔁 Iterate & Set Ops</div>
+              <pre><span class="kw">for</span> (<span class="ty">String</span> s : set) System.out.<span class="fn">println</span>(s);
+
+<span class="cm">// Set operations</span>
+setA.<span class="fn">addAll</span>(setB);      <span class="cm">// Union</span>
+setA.<span class="fn">retainAll</span>(setB);  <span class="cm">// Intersection</span>
+setA.<span class="fn">removeAll</span>(setB);  <span class="cm">// Difference</span></pre>
+            </div>
+          </div>
+          <div class="tip"><span class="tip-icon">💡</span> Best use: removing duplicates from a list →
+            <code>new HashSet&lt;&gt;(list)</code> instantly removes all duplicates!
+          </div>
+        </div>
+      </div>
+
+      <!-- TreeSet -->
+      <div class="ds-card" id="colTS">
+        <div class="ds-header" onclick="toggleDS('colTS')">
+          <div class="ds-header-left">
+            <div class="card-icon" style="background:rgba(168,255,120,0.15);width:36px;height:36px;">🌲</div>
+            <div>
+              <div class="ds-name">TreeSet</div>
+              <div style="font-size:0.72rem;color:var(--muted)">Sorted unique values — always ascending</div>
+            </div>
+            <span class="badge badge-green" style="margin-left:12px;">Sorted Unique</span>
+          </div><span class="ds-chevron">▼</span>
+        </div>
+        <div class="ds-body">
+          <div class="def-box">TreeSet = HashSet + automatically <strong>sorted in ascending order</strong>. No
+            duplicates. Based on TreeMap internally.</div>
+          <div class="feature-row">
+            <div class="feature-box">
+              <div class="feature-label">📌 Declare</div>
+              <pre><span class="ty">TreeSet</span>&lt;<span class="ty">Integer</span>&gt; ts = <span class="kw">new</span> <span class="ty">TreeSet</span>&lt;&gt;();
+ts.<span class="fn">add</span>(<span class="num">5</span>); ts.<span class="fn">add</span>(<span class="num">1</span>); ts.<span class="fn">add</span>(<span class="num">3</span>);
+<span class="cm">// Stored: {1, 3, 5} — auto sorted!</span></pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">👁️ Special Access</div>
+              <pre>ts.<span class="fn">first</span>();       <span class="cm">// 1 (min)</span>
+ts.<span class="fn">last</span>();        <span class="cm">// 5 (max)</span>
+ts.<span class="fn">floor</span>(<span class="num">4</span>);     <span class="cm">// 3 (≤4)</span>
+ts.<span class="fn">ceiling</span>(<span class="num">4</span>);   <span class="cm">// 5 (≥4)</span>
+ts.<span class="fn">headSet</span>(<span class="num">4</span>);   <span class="cm">// {1,3} (< 4)</span>
+ts.<span class="fn">tailSet</span>(<span class="num">3</span>);   <span class="cm">// {3,5} (≥ 3)</span></pre>
+            </div>
+            <div class="feature-box">
+              <div class="feature-label">➖ Remove</div>
+              <pre>ts.<span class="fn">remove</span>(<span class="num">3</span>);   <span class="cm">// {1, 5}</span>
+ts.<span class="fn">pollFirst</span>(); <span class="cm">// removes & returns 1</span>
+ts.<span class="fn">pollLast</span>();  <span class="cm">// removes & returns 5</span></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end collections -->
+
+    <!-- ============ COMPARE ALL ============ -->
+    <div id="compare" class="section">
+      <div class="section-title">⚡ Compare All — At a Glance</div>
+
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-header">
+          <div class="card-icon" style="background:rgba(0,212,255,0.1)">📊</div>
+          <div>
+            <div class="card-title">List Implementations</div>
+            <div class="card-sub">When to use which?</div>
+          </div>
+        </div>
+        <table class="cmp-table">
+          <tr>
+            <th>Feature</th>
+            <th>ArrayList</th>
+            <th>LinkedList</th>
+            <th>Vector</th>
+          </tr>
+          <tr>
+            <td>Access by index</td>
+            <td class="yes">O(1) ✓ Fast</td>
+            <td class="no">O(n) ✗ Slow</td>
+            <td class="yes">O(1) ✓</td>
+          </tr>
+          <tr>
+            <td>Add/remove at end</td>
+            <td class="yes">O(1) amortized</td>
+            <td class="yes">O(1) ✓</td>
+            <td class="yes">O(1)</td>
+          </tr>
+          <tr>
+            <td>Add/remove at middle</td>
+            <td class="no">O(n) ✗</td>
+            <td class="yes">O(1) ✓</td>
+            <td class="no">O(n)</td>
+          </tr>
+          <tr>
+            <td>Memory</td>
+            <td class="yes">Less (array)</td>
+            <td class="no">More (node+pointer)</td>
+            <td class="yes">Less</td>
+          </tr>
+          <tr>
+            <td>Thread safe</td>
+            <td class="no">✗ No</td>
+            <td class="no">✗ No</td>
+            <td class="yes">✓ Yes (legacy)</td>
+          </tr>
+          <tr>
+            <td>Allows null</td>
+            <td class="yes">✓</td>
+            <td class="yes">✓</td>
+            <td class="yes">✓</td>
+          </tr>
+          <tr>
+            <td>Best use</td>
+            <td>Read heavy</td>
+            <td>Insert/Delete heavy</td>
+            <td>Legacy (avoid)</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-header">
+          <div class="card-icon" style="background:rgba(255,209,102,0.1)">🗺️</div>
+          <div>
+            <div class="card-title">Map Implementations</div>
+          </div>
+        </div>
+        <table class="cmp-table">
+          <tr>
+            <th>Feature</th>
+            <th>HashMap</th>
+            <th>LinkedHashMap</th>
+            <th>TreeMap</th>
+            <th>Hashtable</th>
+          </tr>
+          <tr>
+            <td>Order</td>
+            <td class="no">❌ None</td>
+            <td class="yes">✅ Insertion</td>
+            <td class="yes">✅ Sorted (key)</td>
+            <td class="no">❌ None</td>
+          </tr>
+          <tr>
+            <td>get/put speed</td>
+            <td class="yes">O(1) avg</td>
+            <td class="yes">O(1) avg</td>
+            <td class="maybe">O(log n)</td>
+            <td class="yes">O(1) avg</td>
+          </tr>
+          <tr>
+            <td>Null key</td>
+            <td class="yes">✅ 1 allowed</td>
+            <td class="yes">✅ 1 allowed</td>
+            <td class="no">❌ No</td>
+            <td class="no">❌ No</td>
+          </tr>
+          <tr>
+            <td>Null value</td>
+            <td class="yes">✅ Yes</td>
+            <td class="yes">✅ Yes</td>
+            <td class="yes">✅ Yes</td>
+            <td class="no">❌ No</td>
+          </tr>
+          <tr>
+            <td>Thread safe</td>
+            <td class="no">❌ No</td>
+            <td class="no">❌ No</td>
+            <td class="no">❌ No</td>
+            <td class="yes">✅ Yes (legacy)</td>
+          </tr>
+          <tr>
+            <td>Use when</td>
+            <td>General use</td>
+            <td>Order matters</td>
+            <td>Sorted keys needed</td>
+            <td>Legacy (avoid)</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-header">
+          <div class="card-icon" style="background:rgba(168,255,120,0.1)">🎯</div>
+          <div>
+            <div class="card-title">Set Implementations</div>
+          </div>
+        </div>
+        <table class="cmp-table">
+          <tr>
+            <th>Feature</th>
+            <th>HashSet</th>
+            <th>LinkedHashSet</th>
+            <th>TreeSet</th>
+          </tr>
+          <tr>
+            <td>Order</td>
+            <td class="no">❌ None</td>
+            <td class="yes">✅ Insertion order</td>
+            <td class="yes">✅ Sorted (asc)</td>
+          </tr>
+          <tr>
+            <td>Speed (add/contains)</td>
+            <td class="yes">O(1) avg</td>
+            <td class="yes">O(1) avg</td>
+            <td class="maybe">O(log n)</td>
+          </tr>
+          <tr>
+            <td>Allows null</td>
+            <td class="yes">✅ One null</td>
+            <td class="yes">✅ One null</td>
+            <td class="no">❌ No</td>
+          </tr>
+          <tr>
+            <td>Duplicates</td>
+            <td class="no">❌ No</td>
+            <td class="no">❌ No</td>
+            <td class="no">❌ No</td>
+          </tr>
+          <tr>
+            <td>Best use</td>
+            <td>Fast lookup/dedup</td>
+            <td>Unique + order</td>
+            <td>Sorted unique</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon" style="background:rgba(199,125,255,0.1)">🏗️</div>
+          <div>
+            <div class="card-title">Stack vs Queue vs Deque vs PriorityQueue</div>
+          </div>
+        </div>
+        <table class="cmp-table">
+          <tr>
+            <th>Feature</th>
+            <th>Stack</th>
+            <th>Queue</th>
+            <th>Deque (LinkedList)</th>
+            <th>PriorityQueue</th>
+          </tr>
+          <tr>
+            <td>Order</td>
+            <td>LIFO</td>
+            <td>FIFO</td>
+            <td>Both ends</td>
+            <td>Priority (min)</td>
+          </tr>
+          <tr>
+            <td>Add</td>
+            <td>push()</td>
+            <td>offer()</td>
+            <td>addFirst/Last()</td>
+            <td>offer()</td>
+          </tr>
+          <tr>
+            <td>Remove</td>
+            <td>pop()</td>
+            <td>poll()</td>
+            <td>removeFirst/Last()</td>
+            <td>poll()</td>
+          </tr>
+          <tr>
+            <td>Peek</td>
+            <td>peek()</td>
+            <td>peek()</td>
+            <td>peekFirst/Last()</td>
+            <td>peek()</td>
+          </tr>
+          <tr>
+            <td>Thread safe</td>
+            <td class="yes">✅ Yes (legacy)</td>
+            <td class="no">❌ No</td>
+            <td class="no">❌ No</td>
+            <td class="no">❌ No</td>
+          </tr>
+          <tr>
+            <td>Use for</td>
+            <td>Undo, DFS</td>
+            <td>BFS, tasks</td>
+            <td>Palindrome, sliding window</td>
+            <td>Scheduling, Dijkstra</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============ EXCEPTIONS ============ -->
+    <div id="exceptions" class="section">
+      <div class="section-title">⚠️ Exception Handling</div>
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(255,107,107,0.1)">🚨</div>
+            <div>
+              <div class="card-title">try-catch-finally</div>
+            </div>
+          </div>
+          <pre><span class="kw">try</span> {
+    <span class="ty">int</span> result = <span class="num">10</span> / <span class="num">0</span>;      <span class="cm">// throws!</span>
+} <span class="kw">catch</span> (<span class="cl">ArithmeticException</span> e) {
+    System.out.<span class="fn">println</span>(<span class="str">"Error: "</span> + e.<span class="fn">getMessage</span>());
+} <span class="kw">catch</span> (<span class="cl">Exception</span> e) {       <span class="cm">// catch-all</span>
+    e.<span class="fn">printStackTrace</span>();
+} <span class="kw">finally</span> {
+    System.out.<span class="fn">println</span>(<span class="str">"Always runs!"</span>);
+    <span class="cm">// close resources here</span>
+}
+
+<span class="cm">// Multi-catch (Java 7+)</span>
+<span class="kw">catch</span> (<span class="cl">IOException</span> | <span class="cl">SQLException</span> e) { ... }
+
+<span class="cm">// Try-with-resources (auto-close)</span>
+<span class="kw">try</span> (<span class="ty">FileReader</span> fr = <span class="kw">new</span> <span class="ty">FileReader</span>(<span class="str">"f.txt"</span>)) {
+    <span class="cm">// fr auto-closed when done</span>
+}</pre>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(255,209,102,0.1)">🧨</div>
+            <div>
+              <div class="card-title">throw & Custom Exceptions</div>
+            </div>
+          </div>
+          <pre><span class="cm">// throws declaration</span>
+<span class="kw">public</span> <span class="ty">void</span> <span class="fn">setAge</span>(<span class="ty">int</span> age) <span class="kw">throws</span> <span class="cl">Exception</span> {
+    <span class="kw">if</span> (age < <span class="num">0</span>) <span class="kw">throw</span> <span class="kw">new</span> <span class="cl">Exception</span>(<span class="str">"Bad age"</span>);
+    <span class="kw">this</span>.age = age;
+}
+
+<span class="cm">// Custom exception</span>
+<span class="kw">class</span> <span class="cl">InvalidAgeException</span> <span class="kw">extends</span> <span class="cl">RuntimeException</span> {
+    <span class="kw">public</span> <span class="fn">InvalidAgeException</span>(<span class="ty">String</span> msg) {
+        <span class="kw">super</span>(msg);
+    }
+}
+<span class="cm">// Use it</span>
+<span class="kw">throw</span> <span class="kw">new</span> <span class="cl">InvalidAgeException</span>(<span class="str">"Age must be >= 0"</span>);
+
+<span class="cm">// Common exceptions to know:</span>
+<span class="cm">// NullPointerException, ArrayIndexOutOfBoundsException</span>
+<span class="cm">// ClassCastException, NumberFormatException</span>
+<span class="cm">// StackOverflowError, OutOfMemoryError</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ STREAMS ============ -->
+    <div id="streams" class="section">
+      <div class="section-title">🌊 Streams & Lambdas (Java 8+)</div>
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(0,212,255,0.1)">λ</div>
+            <div>
+              <div class="card-title">Lambda Expressions</div>
+            </div>
+          </div>
+          <pre><span class="cm">// Old way (anonymous class)</span>
+<span class="ty">Runnable</span> r = <span class="kw">new</span> <span class="ty">Runnable</span>() {
+    <span class="kw">public</span> <span class="ty">void</span> <span class="fn">run</span>() { System.out.<span class="fn">println</span>(<span class="str">"Hi"</span>); }
+};
+
+<span class="cm">// Lambda way: (params) -> body</span>
+<span class="ty">Runnable</span> r2 = () -> System.out.<span class="fn">println</span>(<span class="str">"Hi"</span>);
+
+<span class="cm">// With parameters</span>
+<span class="ty">Comparator</span>&lt;<span class="ty">Integer</span>&gt; cmp = (a, b) -> a - b;
+
+<span class="cm">// Method reference (even shorter)</span>
+list.<span class="fn">forEach</span>(System.out::<span class="fn">println</span>);</pre>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(168,255,120,0.1)">🌊</div>
+            <div>
+              <div class="card-title">Stream Operations</div>
+            </div>
+          </div>
+          <pre><span class="ty">List</span>&lt;<span class="ty">Integer</span>&gt; nums = List.<span class="fn">of</span>(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>,<span class="num">5</span>,<span class="num">6</span>);
+
+<span class="cm">// filter → map → collect</span>
+<span class="ty">List</span>&lt;<span class="ty">Integer</span>&gt; evens = nums.<span class="fn">stream</span>()
+    .<span class="fn">filter</span>(n -> n % <span class="num">2</span> == <span class="num">0</span>)  <span class="cm">// keep even</span>
+    .<span class="fn">map</span>(n -> n * <span class="num">10</span>)          <span class="cm">// multiply</span>
+    .<span class="fn">collect</span>(<span class="ty">Collectors</span>.<span class="fn">toList</span>());
+<span class="cm">// [20, 40, 60]</span>
+
+<span class="cm">// reduce → single value</span>
+<span class="ty">int</span> sum = nums.<span class="fn">stream</span>().<span class="fn">reduce</span>(<span class="num">0</span>, Integer::<span class="fn">sum</span>);
+
+<span class="cm">// sorted, distinct, count</span>
+nums.<span class="fn">stream</span>().<span class="fn">sorted</span>().<span class="fn">distinct</span>().<span class="fn">count</span>();
+
+<span class="cm">// anyMatch, allMatch, noneMatch</span>
+nums.<span class="fn">stream</span>().<span class="fn">anyMatch</span>(n -> n > <span class="num">4</span>); <span class="cm">// true</span>
+
+<span class="cm">// findFirst</span>
+nums.<span class="fn">stream</span>().<span class="fn">filter</span>(n->n><span class="num">3</span>).<span class="fn">findFirst</span>(); <span class="cm">// Optional[4]</span></pre>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(199,125,255,0.1)">📦</div>
+            <div>
+              <div class="card-title">Optional (avoid null)</div>
+            </div>
+          </div>
+          <pre><span class="cm">// Wrap value that might be null</span>
+<span class="ty">Optional</span>&lt;<span class="ty">String</span>&gt; opt = <span class="ty">Optional</span>.<span class="fn">of</span>(<span class="str">"Hello"</span>);
+<span class="ty">Optional</span>&lt;<span class="ty">String</span>&gt; empty = <span class="ty">Optional</span>.<span class="fn">empty</span>();
+
+opt.<span class="fn">isPresent</span>();          <span class="cm">// true</span>
+opt.<span class="fn">get</span>();                <span class="cm">// "Hello"</span>
+opt.<span class="fn">orElse</span>(<span class="str">"default"</span>);   <span class="cm">// value or default</span>
+opt.<span class="fn">orElseGet</span>(() -> ...); <span class="cm">// lazy default</span>
+opt.<span class="fn">map</span>(<span class="ty">String</span>::<span class="fn">toUpperCase</span>); <span class="cm">// transform</span>
+opt.<span class="fn">ifPresent</span>(s -> System.out.<span class="fn">println</span>(s));</pre>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(255,209,102,0.1)">🧩</div>
+            <div>
+              <div class="card-title">Functional Interfaces</div>
+            </div>
+          </div>
+          <pre><span class="cm">// Predicate: T → boolean</span>
+<span class="ty">Predicate</span>&lt;<span class="ty">String</span>&gt; notEmpty = s -> !s.<span class="fn">isEmpty</span>();
+
+<span class="cm">// Function: T → R</span>
+<span class="ty">Function</span>&lt;<span class="ty">String</span>, <span class="ty">Integer</span>&gt; len = s -> s.<span class="fn">length</span>();
+
+<span class="cm">// Consumer: T → void</span>
+<span class="ty">Consumer</span>&lt;<span class="ty">String</span>&gt; print = System.out::<span class="fn">println</span>;
+
+<span class="cm">// Supplier: () → T</span>
+<span class="ty">Supplier</span>&lt;<span class="ty">String</span>&gt; hello = () -> <span class="str">"Hello!"</span>;
+
+<span class="cm">// BiFunction: (T,U) → R</span>
+<span class="ty">BiFunction</span>&lt;<span class="ty">Integer</span>,<span class="ty">Integer</span>,<span class="ty">Integer</span>&gt; add = (a,b) -> a+b;</pre>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ============ FILE I/O ============ -->
+    <div id="fileio" class="section">
+      <div class="section-title">📁 File Handling (java.io)</div>
+      <div class="grid grid-2">
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(0,212,255,0.1)">📄</div>
+            <div>
+              <div class="card-title">File Class</div>
+              <div class="card-sub">Create, check, delete files & folders</div>
+            </div>
+          </div>
+          <div class="def-box">The <code>File</code> class lets you work with files and directories — create, delete,
+            check existence, list contents. It does NOT read/write content.</div>
+          <pre><span class="kw">import</span> java.io.File;
+
+<span class="ty">File</span> f = <span class="kw">new</span> <span class="ty">File</span>(<span class="str">"notes.txt"</span>);
+
+<span class="cm">// Create new file</span>
+f.<span class="fn">createNewFile</span>();       <span class="cm">// returns true if created</span>
+
+<span class="cm">// Check info</span>
+f.<span class="fn">exists</span>();              <span class="cm">// true / false</span>
+f.<span class="fn">getName</span>();             <span class="cm">// "notes.txt"</span>
+f.<span class="fn">getAbsolutePath</span>();     <span class="cm">// full path</span>
+f.<span class="fn">length</span>();              <span class="cm">// size in bytes</span>
+f.<span class="fn">isFile</span>();              <span class="cm">// true</span>
+f.<span class="fn">isDirectory</span>();         <span class="cm">// false</span>
+f.<span class="fn">canRead</span>();             <span class="cm">// true/false</span>
+f.<span class="fn">canWrite</span>();            <span class="cm">// true/false</span>
+
+<span class="cm">// Delete</span>
+f.<span class="fn">delete</span>();
+
+<span class="cm">// Create directory</span>
+<span class="ty">File</span> dir = <span class="kw">new</span> <span class="ty">File</span>(<span class="str">"myFolder"</span>);
+dir.<span class="fn">mkdir</span>();             <span class="cm">// one level</span>
+dir.<span class="fn">mkdirs</span>();            <span class="cm">// nested dirs</span>
+
+<span class="cm">// List all files in folder</span>
+<span class="ty">String</span>[] files = dir.<span class="fn">list</span>();
+<span class="ty">File</span>[]   fileObjs = dir.<span class="fn">listFiles</span>();</pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(168,255,120,0.1)">✍️</div>
+            <div>
+              <div class="card-title">Write to File</div>
+              <div class="card-sub">FileWriter, BufferedWriter, PrintWriter</div>
+            </div>
+          </div>
+          <div class="def-box">Use <code>FileWriter</code> for basic writing. Wrap in <code>BufferedWriter</code> for
+            performance. Use <code>PrintWriter</code> for println-style writing.</div>
+          <pre><span class="kw">import</span> java.io.*;
+
+<span class="cm">// FileWriter — basic write (overwrites!)</span>
+<span class="ty">FileWriter</span> fw = <span class="kw">new</span> <span class="ty">FileWriter</span>(<span class="str">"notes.txt"</span>);
+fw.<span class="fn">write</span>(<span class="str">"Hello World\n"</span>);
+fw.<span class="fn">close</span>(); <span class="cm">// ALWAYS close!</span>
+
+<span class="cm">// Append mode (add without overwriting)</span>
+<span class="ty">FileWriter</span> fw2 = <span class="kw">new</span> <span class="ty">FileWriter</span>(<span class="str">"notes.txt"</span>, <span class="kw">true</span>);
+fw2.<span class="fn">write</span>(<span class="str">"New line\n"</span>);
+fw2.<span class="fn">close</span>();
+
+<span class="cm">// BufferedWriter — faster for large writes</span>
+<span class="ty">BufferedWriter</span> bw = <span class="kw">new</span> <span class="ty">BufferedWriter</span>(
+    <span class="kw">new</span> <span class="ty">FileWriter</span>(<span class="str">"notes.txt"</span>));
+bw.<span class="fn">write</span>(<span class="str">"Line 1"</span>);
+bw.<span class="fn">newLine</span>(); <span class="cm">// platform-safe newline</span>
+bw.<span class="fn">write</span>(<span class="str">"Line 2"</span>);
+bw.<span class="fn">close</span>();
+
+<span class="cm">// PrintWriter — easiest println style</span>
+<span class="ty">PrintWriter</span> pw = <span class="kw">new</span> <span class="ty">PrintWriter</span>(<span class="str">"notes.txt"</span>);
+pw.<span class="fn">println</span>(<span class="str">"Hello"</span>);
+pw.<span class="fn">printf</span>(<span class="str">"Name: %s, Age: %d\n"</span>, <span class="str">"Ravi"</span>, <span class="num">25</span>);
+pw.<span class="fn">close</span>();</pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(255,107,107,0.1)">📖</div>
+            <div>
+              <div class="card-title">Read from File</div>
+              <div class="card-sub">Scanner, BufferedReader, FileReader</div>
+            </div>
+          </div>
+          <div class="def-box">Use <code>Scanner</code> for easy line-by-line reading. Use <code>BufferedReader</code>
+            for faster performance with large files.</div>
+          <pre><span class="kw">import</span> java.io.*;
+<span class="kw">import</span> java.util.Scanner;
+
+<span class="cm">// Scanner — easiest way to read</span>
+<span class="ty">File</span> f = <span class="kw">new</span> <span class="ty">File</span>(<span class="str">"notes.txt"</span>);
+<span class="ty">Scanner</span> sc = <span class="kw">new</span> <span class="ty">Scanner</span>(f);
+<span class="kw">while</span> (sc.<span class="fn">hasNextLine</span>()) {
+    <span class="ty">String</span> line = sc.<span class="fn">nextLine</span>();
+    System.out.<span class="fn">println</span>(line);
+}
+sc.<span class="fn">close</span>();
+
+<span class="cm">// BufferedReader — faster for big files</span>
+<span class="ty">BufferedReader</span> br = <span class="kw">new</span> <span class="ty">BufferedReader</span>(
+    <span class="kw">new</span> <span class="ty">FileReader</span>(<span class="str">"notes.txt"</span>));
+<span class="ty">String</span> line;
+<span class="kw">while</span> ((line = br.<span class="fn">readLine</span>()) != <span class="kw">null</span>) {
+    System.out.<span class="fn">println</span>(line);
+}
+br.<span class="fn">close</span>();
+
+<span class="cm">// try-with-resources (auto-closes!)</span>
+<span class="kw">try</span> (<span class="ty">BufferedReader</span> r = <span class="kw">new</span> <span class="ty">BufferedReader</span>(
+        <span class="kw">new</span> <span class="ty">FileReader</span>(<span class="str">"notes.txt"</span>))) {
+    r.<span class="fn">lines</span>().<span class="fn">forEach</span>(System.out::<span class="fn">println</span>);
+} <span class="cm">// auto-closed here!</span></pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(199,125,255,0.1)">🔀</div>
+            <div>
+              <div class="card-title">NIO Files (Modern Way)</div>
+              <div class="card-sub">java.nio.file.Files — Java 7+</div>
+            </div>
+          </div>
+          <div class="def-box"><code>java.nio.file.Files</code> is the modern, cleaner API for file operations.
+            Preferred over old java.io for most tasks.</div>
+          <pre><span class="kw">import</span> java.nio.file.*;
+<span class="kw">import</span> java.util.List;
+
+<span class="ty">Path</span> p = <span class="ty">Paths</span>.<span class="fn">get</span>(<span class="str">"notes.txt"</span>);
+
+<span class="cm">// Write (creates or overwrites)</span>
+<span class="ty">Files</span>.<span class="fn">write</span>(p, <span class="str">"Hello"</span>.<span class="fn">getBytes</span>());
+
+<span class="cm">// Write lines</span>
+<span class="ty">List</span>&lt;<span class="ty">String</span>&gt; lines = <span class="ty">List</span>.<span class="fn">of</span>(<span class="str">"Line 1"</span>,<span class="str">"Line 2"</span>);
+<span class="ty">Files</span>.<span class="fn">write</span>(p, lines);
+
+<span class="cm">// Read all content as String</span>
+<span class="ty">String</span> content = <span class="ty">Files</span>.<span class="fn">readString</span>(p);
+
+<span class="cm">// Read all lines into List</span>
+<span class="ty">List</span>&lt;<span class="ty">String</span>&gt; all = <span class="ty">Files</span>.<span class="fn">readAllLines</span>(p);
+
+<span class="cm">// Copy / Move / Delete</span>
+<span class="ty">Files</span>.<span class="fn">copy</span>(p, <span class="ty">Paths</span>.<span class="fn">get</span>(<span class="str">"backup.txt"</span>));
+<span class="ty">Files</span>.<span class="fn">move</span>(p, <span class="ty">Paths</span>.<span class="fn">get</span>(<span class="str">"renamed.txt"</span>));
+<span class="ty">Files</span>.<span class="fn">delete</span>(p);
+
+<span class="cm">// Check</span>
+<span class="ty">Files</span>.<span class="fn">exists</span>(p);
+<span class="ty">Files</span>.<span class="fn">size</span>(p);          <span class="cm">// bytes</span>
+<span class="ty">Files</span>.<span class="fn">isDirectory</span>(p);</pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(255,209,102,0.1)">📦</div>
+            <div>
+              <div class="card-title">Byte Streams</div>
+              <div class="card-sub">FileInputStream / FileOutputStream</div>
+            </div>
+          </div>
+          <div class="def-box">Use byte streams for binary files (images, PDFs, audio). Work with raw bytes (0–255)
+            instead of characters.</div>
+          <pre><span class="kw">import</span> java.io.*;
+
+<span class="cm">// Write bytes</span>
+<span class="ty">FileOutputStream</span> fos = <span class="kw">new</span> <span class="ty">FileOutputStream</span>(<span class="str">"img.dat"</span>);
+<span class="ty">byte</span>[] data = {<span class="num">65</span>, <span class="num">66</span>, <span class="num">67</span>}; <span class="cm">// A, B, C</span>
+fos.<span class="fn">write</span>(data);
+fos.<span class="fn">close</span>();
+
+<span class="cm">// Read bytes</span>
+<span class="ty">FileInputStream</span> fis = <span class="kw">new</span> <span class="ty">FileInputStream</span>(<span class="str">"img.dat"</span>);
+<span class="ty">int</span> b;
+<span class="kw">while</span> ((b = fis.<span class="fn">read</span>()) != -<span class="num">1</span>) {
+    System.out.<span class="fn">print</span>((<span class="ty">char</span>) b); <span class="cm">// ABC</span>
+}
+fis.<span class="fn">close</span>();
+
+<span class="cm">// Buffered byte streams (faster)</span>
+<span class="ty">BufferedInputStream</span>  bis = <span class="kw">new</span> <span class="ty">BufferedInputStream</span>(fis);
+<span class="ty">BufferedOutputStream</span> bos = <span class="kw">new</span> <span class="ty">BufferedOutputStream</span>(fos);</pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(168,255,120,0.1)">💡</div>
+            <div>
+              <div class="card-title">File I/O — Quick Cheat Sheet</div>
+            </div>
+          </div>
+          <table class="cmp-table">
+            <tr>
+              <th>Task</th>
+              <th>Best Class</th>
+              <th>Note</th>
+            </tr>
+            <tr>
+              <td>Write text (simple)</td>
+              <td><code>PrintWriter</code></td>
+              <td>println style</td>
+            </tr>
+            <tr>
+              <td>Write text (fast)</td>
+              <td><code>BufferedWriter</code></td>
+              <td>Wrap FileWriter</td>
+            </tr>
+            <tr>
+              <td>Read text (simple)</td>
+              <td><code>Scanner(File)</code></td>
+              <td>hasNextLine loop</td>
+            </tr>
+            <tr>
+              <td>Read text (fast)</td>
+              <td><code>BufferedReader</code></td>
+              <td>readLine loop</td>
+            </tr>
+            <tr>
+              <td>Write binary</td>
+              <td><code>FileOutputStream</code></td>
+              <td>byte array</td>
+            </tr>
+            <tr>
+              <td>Read binary</td>
+              <td><code>FileInputStream</code></td>
+              <td>read() returns -1 at end</td>
+            </tr>
+            <tr>
+              <td>Modern all-in-one</td>
+              <td><code>Files</code> (NIO)</td>
+              <td>readString / write</td>
+            </tr>
+            <tr>
+              <td>File info / delete</td>
+              <td><code>File</code></td>
+              <td>exists, mkdir, list</td>
+            </tr>
+          </table>
+          <div class="tip" style="margin-top:10px"><span class="tip-icon">💡</span> Always use
+            <strong>try-with-resources</strong>: <code>try (FileWriter fw = new FileWriter("f.txt")) { ... }</code> —
+            file closes automatically even if exception occurs!
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ USER INPUT ============ -->
+    <div id="userinput" class="section">
+      <div class="section-title">⌨️ User Input (Scanner)</div>
+      <div class="grid grid-2">
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(0,212,255,0.1)">📥</div>
+            <div>
+              <div class="card-title">Scanner Basics</div>
+              <div class="card-sub">Read from keyboard (System.in)</div>
+            </div>
+          </div>
+          <div class="def-box"><code>Scanner</code> reads user input from the console. Import
+            <code>java.util.Scanner</code> and create it with <code>System.in</code>.
+          </div>
+          <pre><span class="kw">import</span> java.util.Scanner;
+
+<span class="ty">Scanner</span> sc = <span class="kw">new</span> <span class="ty">Scanner</span>(System.in);
+
+<span class="cm">// Read a String (one word)</span>
+System.out.<span class="fn">print</span>(<span class="str">"Enter name: "</span>);
+<span class="ty">String</span> name = sc.<span class="fn">next</span>();
+
+<span class="cm">// Read full line (with spaces)</span>
+System.out.<span class="fn">print</span>(<span class="str">"Enter sentence: "</span>);
+<span class="ty">String</span> line = sc.<span class="fn">nextLine</span>();
+
+<span class="cm">// Read integer</span>
+System.out.<span class="fn">print</span>(<span class="str">"Enter age: "</span>);
+<span class="ty">int</span> age = sc.<span class="fn">nextInt</span>();
+
+<span class="cm">// Read double</span>
+<span class="ty">double</span> price = sc.<span class="fn">nextDouble</span>();
+
+<span class="cm">// Read boolean</span>
+<span class="ty">boolean</span> flag = sc.<span class="fn">nextBoolean</span>(); <span class="cm">// "true"/"false"</span>
+
+sc.<span class="fn">close</span>(); <span class="cm">// good practice</span></pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(255,107,107,0.1)">⚠️</div>
+            <div>
+              <div class="card-title">Scanner Gotchas & Patterns</div>
+              <div class="card-sub">Common bugs and fixes</div>
+            </div>
+          </div>
+          <pre><span class="cm">// BUG: nextInt() leaves newline in buffer!</span>
+<span class="ty">int</span> age = sc.<span class="fn">nextInt</span>();
+sc.<span class="fn">nextLine</span>(); <span class="cm">// consume leftover newline</span>
+<span class="ty">String</span> name = sc.<span class="fn">nextLine</span>(); <span class="cm">// now works!</span>
+
+<span class="cm">// Multiple inputs on one line</span>
+<span class="cm">// User types: "25 3.14 true"</span>
+<span class="ty">int</span>     a = sc.<span class="fn">nextInt</span>();
+<span class="ty">double</span>  b = sc.<span class="fn">nextDouble</span>();
+<span class="ty">boolean</span> c = sc.<span class="fn">nextBoolean</span>();
+
+<span class="cm">// Check before reading</span>
+<span class="kw">if</span> (sc.<span class="fn">hasNextInt</span>()) {
+    <span class="ty">int</span> n = sc.<span class="fn">nextInt</span>();
+}
+
+<span class="cm">// Loop until valid input</span>
+<span class="kw">while</span> (!sc.<span class="fn">hasNextInt</span>()) {
+    System.out.<span class="fn">println</span>(<span class="str">"Enter a number!"</span>);
+    sc.<span class="fn">next</span>(); <span class="cm">// discard bad input</span>
+}
+<span class="ty">int</span> num = sc.<span class="fn">nextInt</span>();</pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(168,255,120,0.1)">📊</div>
+            <div>
+              <div class="card-title">Scanner Method Reference</div>
+            </div>
+          </div>
+          <table class="cmp-table">
+            <tr>
+              <th>Method</th>
+              <th>Reads</th>
+              <th>Example Input</th>
+            </tr>
+            <tr>
+              <td><code>next()</code></td>
+              <td>One word (String)</td>
+              <td>"Hello"</td>
+            </tr>
+            <tr>
+              <td><code>nextLine()</code></td>
+              <td>Full line</td>
+              <td>"Hello World"</td>
+            </tr>
+            <tr>
+              <td><code>nextInt()</code></td>
+              <td>Integer</td>
+              <td>"42"</td>
+            </tr>
+            <tr>
+              <td><code>nextLong()</code></td>
+              <td>Long</td>
+              <td>"123456789"</td>
+            </tr>
+            <tr>
+              <td><code>nextDouble()</code></td>
+              <td>Double</td>
+              <td>"3.14"</td>
+            </tr>
+            <tr>
+              <td><code>nextFloat()</code></td>
+              <td>Float</td>
+              <td>"3.14"</td>
+            </tr>
+            <tr>
+              <td><code>nextBoolean()</code></td>
+              <td>Boolean</td>
+              <td>"true"</td>
+            </tr>
+            <tr>
+              <td><code>hasNext()</code></td>
+              <td>Check word</td>
+              <td>returns boolean</td>
+            </tr>
+            <tr>
+              <td><code>hasNextLine()</code></td>
+              <td>Check line</td>
+              <td>returns boolean</td>
+            </tr>
+            <tr>
+              <td><code>hasNextInt()</code></td>
+              <td>Check int</td>
+              <td>returns boolean</td>
+            </tr>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ DATE & TIME ============ -->
+    <div id="datetime" class="section">
+      <div class="section-title">📅 Date & Time (java.time — Java 8+)</div>
+      <div class="grid grid-2">
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(0,212,255,0.1)">📅</div>
+            <div>
+              <div class="card-title">LocalDate, LocalTime, LocalDateTime</div>
+            </div>
+          </div>
+          <div class="def-box">Java 8 introduced <code>java.time</code> — immutable, thread-safe date/time classes.
+            Always prefer these over old <code>Date</code>/<code>Calendar</code>.</div>
+          <pre><span class="kw">import</span> java.time.*;
+
+<span class="cm">// Current date / time</span>
+<span class="ty">LocalDate</span>     date  = <span class="ty">LocalDate</span>.<span class="fn">now</span>();      <span class="cm">// 2026-03-25</span>
+<span class="ty">LocalTime</span>     time  = <span class="ty">LocalTime</span>.<span class="fn">now</span>();      <span class="cm">// 14:30:05</span>
+<span class="ty">LocalDateTime</span> both  = <span class="ty">LocalDateTime</span>.<span class="fn">now</span>(); <span class="cm">// 2026-03-25T14:30</span>
+
+<span class="cm">// Specific date/time</span>
+<span class="ty">LocalDate</span> d = <span class="ty">LocalDate</span>.<span class="fn">of</span>(<span class="num">2000</span>, <span class="num">12</span>, <span class="num">25</span>);
+<span class="ty">LocalTime</span> t = <span class="ty">LocalTime</span>.<span class="fn">of</span>(<span class="num">9</span>, <span class="num">30</span>, <span class="num">0</span>);
+
+<span class="cm">// Get parts</span>
+date.<span class="fn">getYear</span>();        <span class="cm">// 2026</span>
+date.<span class="fn">getMonth</span>();       <span class="cm">// MARCH</span>
+date.<span class="fn">getMonthValue</span>(); <span class="cm">// 3</span>
+date.<span class="fn">getDayOfMonth</span>(); <span class="cm">// 25</span>
+date.<span class="fn">getDayOfWeek</span>();  <span class="cm">// WEDNESDAY</span>
+
+<span class="cm">// Add / subtract</span>
+date.<span class="fn">plusDays</span>(<span class="num">7</span>);
+date.<span class="fn">minusMonths</span>(<span class="num">2</span>);
+date.<span class="fn">plusYears</span>(<span class="num">1</span>);</pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(255,107,107,0.1)">🎨</div>
+            <div>
+              <div class="card-title">Format & Parse Dates</div>
+              <div class="card-sub">DateTimeFormatter</div>
+            </div>
+          </div>
+          <pre><span class="kw">import</span> java.time.*;
+<span class="kw">import</span> java.time.format.DateTimeFormatter;
+
+<span class="ty">LocalDateTime</span> now = <span class="ty">LocalDateTime</span>.<span class="fn">now</span>();
+
+<span class="cm">// Predefined formats</span>
+now.<span class="fn">format</span>(<span class="ty">DateTimeFormatter</span>.ISO_LOCAL_DATE);
+<span class="cm">// "2026-03-25"</span>
+
+<span class="cm">// Custom format</span>
+<span class="ty">DateTimeFormatter</span> fmt =
+    <span class="ty">DateTimeFormatter</span>.<span class="fn">ofPattern</span>(<span class="str">"dd/MM/yyyy HH:mm"</span>);
+<span class="ty">String</span> formatted = now.<span class="fn">format</span>(fmt);
+<span class="cm">// "25/03/2026 14:30"</span>
+
+<span class="cm">// Parse string → LocalDate</span>
+<span class="ty">LocalDate</span> parsed = <span class="ty">LocalDate</span>.<span class="fn">parse</span>(
+    <span class="str">"25/03/2026"</span>,
+    <span class="ty">DateTimeFormatter</span>.<span class="fn">ofPattern</span>(<span class="str">"dd/MM/yyyy"</span>)
+);
+
+<span class="cm">// Format patterns:</span>
+<span class="cm">// yyyy=year  MM=month  dd=day</span>
+<span class="cm">// HH=hour(24) hh=hour(12) mm=min ss=sec</span>
+<span class="cm">// E=day name  MMMM=full month name</span></pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(168,255,120,0.1)">⏱️</div>
+            <div>
+              <div class="card-title">Duration, Period & Comparisons</div>
+            </div>
+          </div>
+          <pre><span class="ty">LocalDate</span> d1 = <span class="ty">LocalDate</span>.<span class="fn">of</span>(<span class="num">2000</span>, <span class="num">1</span>, <span class="num">1</span>);
+<span class="ty">LocalDate</span> d2 = <span class="ty">LocalDate</span>.<span class="fn">now</span>();
+
+<span class="cm">// Period = date difference (years/months/days)</span>
+<span class="ty">Period</span> p = <span class="ty">Period</span>.<span class="fn">between</span>(d1, d2);
+p.<span class="fn">getYears</span>();   <span class="cm">// 26</span>
+p.<span class="fn">getMonths</span>();  <span class="cm">// 2</span>
+p.<span class="fn">getDays</span>();    <span class="cm">// 24</span>
+
+<span class="cm">// Duration = time difference (hours/mins/secs)</span>
+<span class="ty">LocalTime</span> t1 = <span class="ty">LocalTime</span>.<span class="fn">of</span>(<span class="num">9</span>,<span class="num">0</span>);
+<span class="ty">LocalTime</span> t2 = <span class="ty">LocalTime</span>.<span class="fn">of</span>(<span class="num">17</span>,<span class="num">30</span>);
+<span class="ty">Duration</span> dur = <span class="ty">Duration</span>.<span class="fn">between</span>(t1, t2);
+dur.<span class="fn">toHours</span>();   <span class="cm">// 8</span>
+dur.<span class="fn">toMinutes</span>(); <span class="cm">// 510</span>
+
+<span class="cm">// Compare dates</span>
+d2.<span class="fn">isAfter</span>(d1);     <span class="cm">// true</span>
+d2.<span class="fn">isBefore</span>(d1);    <span class="cm">// false</span>
+d1.<span class="fn">isEqual</span>(d2);     <span class="cm">// false</span>
+d2.<span class="fn">compareTo</span>(d1);   <span class="cm">// positive</span></pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(255,209,102,0.1)">📊</div>
+            <div>
+              <div class="card-title">Date/Time Quick Reference</div>
+            </div>
+          </div>
+          <table class="cmp-table">
+            <tr>
+              <th>Class</th>
+              <th>Contains</th>
+              <th>Example</th>
+            </tr>
+            <tr>
+              <td><code>LocalDate</code></td>
+              <td>Date only</td>
+              <td>2026-03-25</td>
+            </tr>
+            <tr>
+              <td><code>LocalTime</code></td>
+              <td>Time only</td>
+              <td>14:30:05</td>
+            </tr>
+            <tr>
+              <td><code>LocalDateTime</code></td>
+              <td>Date + Time</td>
+              <td>2026-03-25T14:30</td>
+            </tr>
+            <tr>
+              <td><code>ZonedDateTime</code></td>
+              <td>Date + Time + Zone</td>
+              <td>...+05:30[Asia/Kolkata]</td>
+            </tr>
+            <tr>
+              <td><code>Instant</code></td>
+              <td>Timestamp (Unix)</td>
+              <td>milliseconds since 1970</td>
+            </tr>
+            <tr>
+              <td><code>Period</code></td>
+              <td>Date gap</td>
+              <td>P26Y2M24D</td>
+            </tr>
+            <tr>
+              <td><code>Duration</code></td>
+              <td>Time gap</td>
+              <td>PT8H30M</td>
+            </tr>
+            <tr>
+              <td><code>DateTimeFormatter</code></td>
+              <td>Format/Parse</td>
+              <td>"dd/MM/yyyy"</td>
+            </tr>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ WRAPPERS ============ -->
+    <div id="wrappers" class="section">
+      <div class="section-title">📦 Wrapper Classes</div>
+      <div class="grid grid-2">
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(0,212,255,0.1)">🔄</div>
+            <div>
+              <div class="card-title">Wrapper Class Overview</div>
+              <div class="card-sub">Primitive → Object conversion</div>
+            </div>
+          </div>
+          <div class="def-box">Wrapper classes convert primitive types into objects. Required for Collections (which can
+            only hold objects, not primitives).</div>
+          <table class="cmp-table">
+            <tr>
+              <th>Primitive</th>
+              <th>Wrapper</th>
+              <th>Example</th>
+            </tr>
+            <tr>
+              <td><code>byte</code></td>
+              <td><code>Byte</code></td>
+              <td><code>Byte.valueOf((byte)5)</code></td>
+            </tr>
+            <tr>
+              <td><code>short</code></td>
+              <td><code>Short</code></td>
+              <td><code>Short.valueOf((short)10)</code></td>
+            </tr>
+            <tr>
+              <td><code>int</code></td>
+              <td><code>Integer</code></td>
+              <td><code>Integer.valueOf(42)</code></td>
+            </tr>
+            <tr>
+              <td><code>long</code></td>
+              <td><code>Long</code></td>
+              <td><code>Long.valueOf(100L)</code></td>
+            </tr>
+            <tr>
+              <td><code>float</code></td>
+              <td><code>Float</code></td>
+              <td><code>Float.valueOf(3.14f)</code></td>
+            </tr>
+            <tr>
+              <td><code>double</code></td>
+              <td><code>Double</code></td>
+              <td><code>Double.valueOf(3.14)</code></td>
+            </tr>
+            <tr>
+              <td><code>char</code></td>
+              <td><code>Character</code></td>
+              <td><code>Character.valueOf('A')</code></td>
+            </tr>
+            <tr>
+              <td><code>boolean</code></td>
+              <td><code>Boolean</code></td>
+              <td><code>Boolean.valueOf(true)</code></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(255,107,107,0.1)">⚡</div>
+            <div>
+              <div class="card-title">Autoboxing & Unboxing</div>
+              <div class="card-sub">Java auto-converts for you</div>
+            </div>
+          </div>
+          <pre><span class="cm">// Autoboxing: primitive → Wrapper (auto)</span>
+<span class="ty">Integer</span> i = <span class="num">42</span>;       <span class="cm">// int → Integer</span>
+<span class="ty">Double</span>  d = <span class="num">3.14</span>;    <span class="cm">// double → Double</span>
+<span class="ty">Boolean</span> b = <span class="kw">true</span>;    <span class="cm">// boolean → Boolean</span>
+
+<span class="cm">// Unboxing: Wrapper → primitive (auto)</span>
+<span class="ty">int</span>    n = i;         <span class="cm">// Integer → int</span>
+<span class="ty">double</span> x = d;        <span class="cm">// Double → double</span>
+
+<span class="cm">// Use in ArrayList (needs objects)</span>
+<span class="ty">ArrayList</span>&lt;<span class="ty">Integer</span>&gt; list = <span class="kw">new</span> <span class="ty">ArrayList</span>&lt;&gt;();
+list.<span class="fn">add</span>(<span class="num">10</span>);  <span class="cm">// auto-boxed to Integer</span>
+<span class="ty">int</span> val = list.<span class="fn">get</span>(<span class="num">0</span>); <span class="cm">// auto-unboxed to int</span></pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(168,255,120,0.1)">🛠️</div>
+            <div>
+              <div class="card-title">Wrapper Utility Methods</div>
+            </div>
+          </div>
+          <pre><span class="cm">// Integer utilities</span>
+<span class="ty">Integer</span>.<span class="fn">parseInt</span>(<span class="str">"42"</span>);       <span class="cm">// String → int</span>
+<span class="ty">Integer</span>.<span class="fn">toString</span>(<span class="num">42</span>);         <span class="cm">// int → String</span>
+<span class="ty">Integer</span>.<span class="fn">toBinaryString</span>(<span class="num">10</span>);   <span class="cm">// "1010"</span>
+<span class="ty">Integer</span>.<span class="fn">toHexString</span>(<span class="num">255</span>);     <span class="cm">// "ff"</span>
+<span class="ty">Integer</span>.<span class="fn">toOctalString</span>(<span class="num">8</span>);     <span class="cm">// "10"</span>
+<span class="ty">Integer</span>.MAX_VALUE;               <span class="cm">// 2147483647</span>
+<span class="ty">Integer</span>.MIN_VALUE;               <span class="cm">// -2147483648</span>
+<span class="ty">Integer</span>.<span class="fn">max</span>(<span class="num">5</span>, <span class="num">10</span>);            <span class="cm">// 10</span>
+<span class="ty">Integer</span>.<span class="fn">min</span>(<span class="num">5</span>, <span class="num">10</span>);            <span class="cm">// 5</span>
+<span class="ty">Integer</span>.<span class="fn">sum</span>(<span class="num">5</span>, <span class="num">10</span>);            <span class="cm">// 15</span>
+
+<span class="cm">// Double utilities</span>
+<span class="ty">Double</span>.<span class="fn">parseDouble</span>(<span class="str">"3.14"</span>);
+<span class="ty">Double</span>.isNaN(<span class="num">0.0</span>/<span class="num">0.0</span>);          <span class="cm">// true</span>
+<span class="ty">Double</span>.isInfinite(<span class="num">1.0</span>/<span class="num">0.0</span>);    <span class="cm">// true</span>
+
+<span class="cm">// Character utilities</span>
+<span class="ty">Character</span>.<span class="fn">isLetter</span>(<span class="str">'A'</span>);    <span class="cm">// true</span>
+<span class="ty">Character</span>.<span class="fn">isDigit</span>(<span class="str">'5'</span>);     <span class="cm">// true</span>
+<span class="ty">Character</span>.<span class="fn">toUpperCase</span>(<span class="str">'a'</span>);<span class="cm">// 'A'</span>
+<span class="ty">Character</span>.<span class="fn">isWhitespace</span>(<span class="str">' '</span>);</pre>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ GENERICS ============ -->
+    <div id="generics" class="section">
+      <div class="section-title">🧬 Generics</div>
+      <div class="grid grid-2">
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(0,212,255,0.1)">🧬</div>
+            <div>
+              <div class="card-title">Generic Class</div>
+              <div class="card-sub">Type-safe reusable classes</div>
+            </div>
+          </div>
+          <div class="def-box">Generics allow you to write a class/method that works with <strong>any type</strong>
+            while being type-safe. <code>&lt;T&gt;</code> is a type parameter (T = Type).</div>
+          <pre><span class="cm">// Generic class: works with any type</span>
+<span class="kw">class</span> <span class="cl">Box</span>&lt;<span class="ty">T</span>&gt; {
+    <span class="kw">private</span> <span class="ty">T</span> value;
+    <span class="kw">public</span> <span class="fn">Box</span>(<span class="ty">T</span> val) { <span class="kw">this</span>.value = val; }
+    <span class="kw">public</span> <span class="ty">T</span> <span class="fn">get</span>() { <span class="kw">return</span> value; }
+}
+
+<span class="cm">// Use with Integer</span>
+<span class="ty">Box</span>&lt;<span class="ty">Integer</span>&gt; intBox = <span class="kw">new</span> <span class="ty">Box</span>&lt;&gt;(<span class="num">42</span>);
+intBox.<span class="fn">get</span>(); <span class="cm">// 42 (int)</span>
+
+<span class="cm">// Use with String</span>
+<span class="ty">Box</span>&lt;<span class="ty">String</span>&gt; strBox = <span class="kw">new</span> <span class="ty">Box</span>&lt;&gt;(<span class="str">"Hello"</span>);
+strBox.<span class="fn">get</span>(); <span class="cm">// "Hello" (String)</span>
+
+<span class="cm">// Multiple type params</span>
+<span class="kw">class</span> <span class="cl">Pair</span>&lt;<span class="ty">K</span>, <span class="ty">V</span>&gt; {
+    <span class="ty">K</span> key; <span class="ty">V</span> value;
+    <span class="kw">public</span> <span class="fn">Pair</span>(<span class="ty">K</span> k, <span class="ty">V</span> v) { key=k; value=v; }
+}</pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(255,107,107,0.1)">⚡</div>
+            <div>
+              <div class="card-title">Generic Methods & Wildcards</div>
+            </div>
+          </div>
+          <pre><span class="cm">// Generic method</span>
+<span class="kw">public static</span> &lt;<span class="ty">T</span>&gt; <span class="ty">void</span> <span class="fn">printArray</span>(<span class="ty">T</span>[] arr) {
+    <span class="kw">for</span> (<span class="ty">T</span> item : arr) System.out.<span class="fn">println</span>(item);
+}
+
+<span class="cm">// Call with any type</span>
+<span class="fn">printArray</span>(<span class="kw">new</span> <span class="ty">Integer</span>[]{<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>});
+<span class="fn">printArray</span>(<span class="kw">new</span> <span class="ty">String</span>[]{<span class="str">"a"</span>,<span class="str">"b"</span>});
+
+<span class="cm">// Bounded type: T must be Number or subclass</span>
+<span class="kw">public static</span> &lt;<span class="ty">T</span> <span class="kw">extends</span> <span class="ty">Number</span>&gt; <span class="ty">double</span> <span class="fn">sum</span>(<span class="ty">T</span> a, <span class="ty">T</span> b) {
+    <span class="kw">return</span> a.<span class="fn">doubleValue</span>() + b.<span class="fn">doubleValue</span>();
+}
+
+<span class="cm">// Wildcard ? = unknown type</span>
+<span class="kw">public static</span> <span class="ty">void</span> <span class="fn">printList</span>(<span class="ty">List</span>&lt;?&gt; list) {
+    <span class="kw">for</span> (<span class="ty">Object</span> o : list) System.out.<span class="fn">println</span>(o);
+}
+
+<span class="cm">// Upper bounded: List of Number or subclass</span>
+<span class="ty">List</span>&lt;? <span class="kw">extends</span> <span class="ty">Number</span>&gt; nums;
+<span class="cm">// Lower bounded: List of Number or superclass</span>
+<span class="ty">List</span>&lt;? <span class="kw">super</span> <span class="ty">Integer</span>&gt; ints;</pre>
+          <div class="tip" style="margin-top:10px"><span class="tip-icon">💡</span> Common type param names:
+            <code>T</code>=Type, <code>E</code>=Element, <code>K</code>=Key, <code>V</code>=Value,
+            <code>N</code>=Number, <code>R</code>=Return type
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ ENUMS ============ -->
+    <div id="enums" class="section">
+      <div class="section-title">🔢 Enums (Enumerations)</div>
+      <div class="grid grid-2">
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(0,212,255,0.1)">🔢</div>
+            <div>
+              <div class="card-title">Enum Basics</div>
+              <div class="card-sub">Named constants group</div>
+            </div>
+          </div>
+          <div class="def-box">An <code>enum</code> is a special class that represents a group of
+            <strong>constants</strong> (unchangeable values). Use when a variable can only be one of a fixed set of
+            values.
+          </div>
+          <pre><span class="cm">// Define enum</span>
+<span class="kw">enum</span> <span class="cl">Day</span> {
+    MON, TUE, WED, THU, FRI, SAT, SUN
+}
+
+<span class="cm">// Declare variable</span>
+<span class="cl">Day</span> today = <span class="cl">Day</span>.WED;
+
+<span class="cm">// Use in if</span>
+<span class="kw">if</span> (today == <span class="cl">Day</span>.WED) {
+    System.out.<span class="fn">println</span>(<span class="str">"Wednesday!"</span>);
+}
+
+<span class="cm">// Use in switch</span>
+<span class="kw">switch</span> (today) {
+    <span class="kw">case</span> SAT: <span class="kw">case</span> SUN:
+        System.out.<span class="fn">println</span>(<span class="str">"Weekend!"</span>); <span class="kw">break</span>;
+    <span class="kw">default</span>:
+        System.out.<span class="fn">println</span>(<span class="str">"Weekday"</span>);
+}
+
+<span class="cm">// Loop all values</span>
+<span class="kw">for</span> (<span class="cl">Day</span> d : <span class="cl">Day</span>.<span class="fn">values</span>()) {
+    System.out.<span class="fn">println</span>(d);
+}</pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(255,107,107,0.1)">🛠️</div>
+            <div>
+              <div class="card-title">Enum Methods & Fields</div>
+            </div>
+          </div>
+          <pre><span class="cm">// Enum with fields and methods</span>
+<span class="kw">enum</span> <span class="cl">Planet</span> {
+    MERCURY(<span class="num">3.303e+23</span>, <span class="num">2.4397e6</span>),
+    VENUS  (<span class="num">4.869e+24</span>, <span class="num">6.0518e6</span>),
+    EARTH  (<span class="num">5.976e+24</span>, <span class="num">6.37814e6</span>);
+
+    <span class="kw">private final</span> <span class="ty">double</span> mass;
+    <span class="kw">private final</span> <span class="ty">double</span> radius;
+
+    <span class="fn">Planet</span>(<span class="ty">double</span> mass, <span class="ty">double</span> radius) {
+        <span class="kw">this</span>.mass = mass; <span class="kw">this</span>.radius = radius;
+    }
+
+    <span class="ty">double</span> <span class="fn">surfaceGravity</span>() {
+        <span class="kw">final</span> <span class="ty">double</span> G = <span class="num">6.67300E-11</span>;
+        <span class="kw">return</span> G * mass / (radius * radius);
+    }
+}
+
+<span class="cm">// Built-in enum methods</span>
+<span class="ty">String</span> name = <span class="cl">Day</span>.MON.<span class="fn">name</span>();    <span class="cm">// "MON"</span>
+<span class="ty">int</span>    pos  = <span class="cl">Day</span>.MON.<span class="fn">ordinal</span>(); <span class="cm">// 0 (index)</span>
+<span class="cl">Day</span>    d    = <span class="cl">Day</span>.<span class="fn">valueOf</span>(<span class="str">"MON"</span>);<span class="cm">// Day.MON</span>
+<span class="cl">Day</span>[]  all  = <span class="cl">Day</span>.<span class="fn">values</span>();       <span class="cm">// all values</span></pre>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ THREADS ============ -->
+    <div id="threads" class="section">
+      <div class="section-title">🧵 Threads & Concurrency</div>
+      <div class="grid grid-2">
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(0,212,255,0.1)">🧵</div>
+            <div>
+              <div class="card-title">Creating Threads</div>
+              <div class="card-sub">extend Thread or implement Runnable</div>
+            </div>
+          </div>
+          <div class="def-box">A thread is a separate path of execution. Java can run multiple threads simultaneously.
+            Two ways to create: extend <code>Thread</code> or implement <code>Runnable</code>.</div>
+          <pre><span class="cm">// Way 1: extend Thread</span>
+<span class="kw">class</span> <span class="cl">MyThread</span> <span class="kw">extends</span> <span class="cl">Thread</span> {
+    <span class="kw">public</span> <span class="ty">void</span> <span class="fn">run</span>() {
+        System.out.<span class="fn">println</span>(<span class="str">"Thread running!"</span>);
+    }
+}
+<span class="cl">MyThread</span> t = <span class="kw">new</span> <span class="cl">MyThread</span>();
+t.<span class="fn">start</span>(); <span class="cm">// start() not run()!</span>
+
+<span class="cm">// Way 2: implement Runnable (preferred)</span>
+<span class="kw">class</span> <span class="cl">MyRunnable</span> <span class="kw">implements</span> <span class="cl">Runnable</span> {
+    <span class="kw">public</span> <span class="ty">void</span> <span class="fn">run</span>() {
+        System.out.<span class="fn">println</span>(<span class="str">"Runnable!"</span>);
+    }
+}
+<span class="ty">Thread</span> t2 = <span class="kw">new</span> <span class="ty">Thread</span>(<span class="kw">new</span> <span class="cl">MyRunnable</span>());
+t2.<span class="fn">start</span>();
+
+<span class="cm">// Way 3: Lambda (simplest)</span>
+<span class="ty">Thread</span> t3 = <span class="kw">new</span> <span class="ty">Thread</span>(() -> {
+    System.out.<span class="fn">println</span>(<span class="str">"Lambda thread!"</span>);
+});
+t3.<span class="fn">start</span>();</pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(255,107,107,0.1)">⚙️</div>
+            <div>
+              <div class="card-title">Thread Methods</div>
+            </div>
+          </div>
+          <pre><span class="ty">Thread</span> t = <span class="kw">new</span> <span class="ty">Thread</span>(() -> { <span class="cm">/* ... */</span> });
+
+t.<span class="fn">start</span>();             <span class="cm">// begin execution</span>
+t.<span class="fn">setName</span>(<span class="str">"Worker"</span>); <span class="cm">// give a name</span>
+t.<span class="fn">getName</span>();          <span class="cm">// get name</span>
+t.<span class="fn">setPriority</span>(<span class="num">10</span>);   <span class="cm">// 1(low) to 10(high)</span>
+t.<span class="fn">getPriority</span>();      <span class="cm">// default 5</span>
+t.<span class="fn">isAlive</span>();           <span class="cm">// is still running?</span>
+t.<span class="fn">join</span>();              <span class="cm">// wait for it to finish</span>
+t.<span class="fn">interrupt</span>();         <span class="cm">// request stop</span>
+
+<span class="cm">// Sleep (pause this thread)</span>
+<span class="kw">try</span> {
+    <span class="ty">Thread</span>.<span class="fn">sleep</span>(<span class="num">1000</span>); <span class="cm">// sleep 1 second</span>
+} <span class="kw">catch</span> (<span class="cl">InterruptedException</span> e) { ... }
+
+<span class="cm">// Current thread info</span>
+<span class="ty">Thread</span>.<span class="fn">currentThread</span>().<span class="fn">getName</span>();
+<span class="ty">Thread</span>.<span class="fn">currentThread</span>().<span class="fn">getId</span>();
+
+<span class="cm">// Thread states</span>
+<span class="cm">// NEW → RUNNABLE → RUNNING → BLOCKED/WAITING → TERMINATED</span></pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(168,255,120,0.1)">🔒</div>
+            <div>
+              <div class="card-title">Synchronization</div>
+              <div class="card-sub">Prevent race conditions</div>
+            </div>
+          </div>
+          <div class="def-box">When multiple threads access shared data, use <code>synchronized</code> to allow only one
+            thread at a time. Prevents <strong>race conditions</strong>.</div>
+          <pre><span class="kw">class</span> <span class="cl">Counter</span> {
+    <span class="kw">private</span> <span class="ty">int</span> count = <span class="num">0</span>;
+
+    <span class="cm">// synchronized method</span>
+    <span class="kw">public synchronized void</span> <span class="fn">increment</span>() {
+        count++;
+    }
+
+    <span class="cm">// synchronized block (more fine-grained)</span>
+    <span class="kw">public void</span> <span class="fn">add</span>(<span class="ty">int</span> n) {
+        <span class="kw">synchronized</span>(<span class="kw">this</span>) {
+            count += n;
+        }
+    }
+    <span class="kw">public int</span> <span class="fn">getCount</span>() { <span class="kw">return</span> count; }
+}
+
+<span class="cm">// volatile: ensures visibility across threads</span>
+<span class="kw">private volatile boolean</span> running = <span class="kw">true</span>;</pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(255,209,102,0.1)">🏊</div>
+            <div>
+              <div class="card-title">ExecutorService (Thread Pool)</div>
+            </div>
+          </div>
+          <div class="def-box">Instead of creating threads manually, use <code>ExecutorService</code> — a managed thread
+            pool that reuses threads for better performance.</div>
+          <pre><span class="kw">import</span> java.util.concurrent.*;
+
+<span class="cm">// Fixed thread pool (e.g. 3 threads)</span>
+<span class="ty">ExecutorService</span> exec =
+    <span class="ty">Executors</span>.<span class="fn">newFixedThreadPool</span>(<span class="num">3</span>);
+
+<span class="cm">// Submit tasks</span>
+exec.<span class="fn">execute</span>(() -> System.out.<span class="fn">println</span>(<span class="str">"Task 1"</span>));
+exec.<span class="fn">execute</span>(() -> System.out.<span class="fn">println</span>(<span class="str">"Task 2"</span>));
+
+<span class="cm">// Submit with result (Future)</span>
+<span class="ty">Future</span>&lt;<span class="ty">Integer</span>&gt; future = exec.<span class="fn">submit</span>(() -> {
+    <span class="ty">Thread</span>.<span class="fn">sleep</span>(<span class="num">100</span>);
+    <span class="kw">return</span> <span class="num">42</span>;
+});
+<span class="ty">int</span> result = future.<span class="fn">get</span>(); <span class="cm">// blocks until done</span>
+
+<span class="cm">// Shutdown (no new tasks)</span>
+exec.<span class="fn">shutdown</span>();
+<span class="cm">// Types: newCachedThreadPool(), newSingleThreadExecutor()</span></pre>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ REGEX ============ -->
+    <div id="regex" class="section">
+      <div class="section-title">🔍 Regular Expressions (RegEx)</div>
+      <div class="grid grid-2">
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(0,212,255,0.1)">🔍</div>
+            <div>
+              <div class="card-title">Pattern & Matcher</div>
+              <div class="card-sub">java.util.regex</div>
+            </div>
+          </div>
+          <div class="def-box">RegEx = patterns to search/match/replace text. Use <code>Pattern</code> to compile a
+            regex and <code>Matcher</code> to apply it.</div>
+          <pre><span class="kw">import</span> java.util.regex.*;
+
+<span class="cm">// Simple: String.matches()</span>
+<span class="str">"Hello123"</span>.<span class="fn">matches</span>(<span class="str">"[A-Za-z0-9]+"</span>); <span class="cm">// true</span>
+
+<span class="cm">// Pattern + Matcher</span>
+<span class="ty">Pattern</span> p = <span class="ty">Pattern</span>.<span class="fn">compile</span>(<span class="str">"\\d+"</span>); <span class="cm">// one+ digits</span>
+<span class="ty">Matcher</span> m = p.<span class="fn">matcher</span>(<span class="str">"I have 3 cats and 12 dogs"</span>);
+
+<span class="kw">while</span> (m.<span class="fn">find</span>()) {
+    System.out.<span class="fn">println</span>(m.<span class="fn">group</span>()); <span class="cm">// "3", "12"</span>
+}
+
+<span class="cm">// matches() — whole string must match</span>
+m.<span class="fn">reset</span>();
+<span class="ty">boolean</span> exact = m.<span class="fn">matches</span>();
+
+<span class="cm">// find() — find anywhere in string</span>
+<span class="cm">// group() — get matched text</span>
+<span class="cm">// start() — match start index</span>
+<span class="cm">// end()   — match end index</span></pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(255,107,107,0.1)">📚</div>
+            <div>
+              <div class="card-title">RegEx Cheat Sheet</div>
+            </div>
+          </div>
+          <table class="cmp-table">
+            <tr>
+              <th>Pattern</th>
+              <th>Meaning</th>
+              <th>Example Match</th>
+            </tr>
+            <tr>
+              <td><code>.</code></td>
+              <td>Any char except newline</td>
+              <td>"a", "1", "@"</td>
+            </tr>
+            <tr>
+              <td><code>\d</code></td>
+              <td>Digit [0-9]</td>
+              <td>"5"</td>
+            </tr>
+            <tr>
+              <td><code>\D</code></td>
+              <td>Non-digit</td>
+              <td>"a", "@"</td>
+            </tr>
+            <tr>
+              <td><code>\w</code></td>
+              <td>Word char [a-zA-Z0-9_]</td>
+              <td>"hello"</td>
+            </tr>
+            <tr>
+              <td><code>\s</code></td>
+              <td>Whitespace</td>
+              <td>" ", "\t"</td>
+            </tr>
+            <tr>
+              <td><code>^</code></td>
+              <td>Start of string</td>
+              <td>^Hello</td>
+            </tr>
+            <tr>
+              <td><code>$</code></td>
+              <td>End of string</td>
+              <td>World$</td>
+            </tr>
+            <tr>
+              <td><code>*</code></td>
+              <td>0 or more</td>
+              <td>ab*c → ac, abc</td>
+            </tr>
+            <tr>
+              <td><code>+</code></td>
+              <td>1 or more</td>
+              <td>ab+c → abc, abbc</td>
+            </tr>
+            <tr>
+              <td><code>?</code></td>
+              <td>0 or 1</td>
+              <td>colou?r → color, colour</td>
+            </tr>
+            <tr>
+              <td><code>{n}</code></td>
+              <td>Exactly n times</td>
+              <td>\d{3} → "123"</td>
+            </tr>
+            <tr>
+              <td><code>[abc]</code></td>
+              <td>One of a, b, c</td>
+              <td>"a" or "b"</td>
+            </tr>
+            <tr>
+              <td><code>[^abc]</code></td>
+              <td>Not a, b, or c</td>
+              <td>"d", "1"</td>
+            </tr>
+            <tr>
+              <td><code>(a|b)</code></td>
+              <td>a or b</td>
+              <td>"cat" or "dog"</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(168,255,120,0.1)">🔄</div>
+            <div>
+              <div class="card-title">Replace & Split with RegEx</div>
+            </div>
+          </div>
+          <pre><span class="ty">String</span> s = <span class="str">"Hello   World  Java"</span>;
+
+<span class="cm">// replaceAll: replace pattern</span>
+s.<span class="fn">replaceAll</span>(<span class="str">"\\s+"</span>, <span class="str">" "</span>);   <span class="cm">// "Hello World Java"</span>
+s.<span class="fn">replaceFirst</span>(<span class="str">"\\d"</span>, <span class="str">"X"</span>); <span class="cm">// first digit→X</span>
+
+<span class="cm">// split: split by pattern</span>
+<span class="ty">String</span>[] words = s.<span class="fn">split</span>(<span class="str">"\\s+"</span>); <span class="cm">// by spaces</span>
+<span class="cm">// ["Hello", "World", "Java"]</span>
+
+<span class="cm">// Common patterns for validation</span>
+<span class="ty">String</span> email = <span class="str">"user@example.com"</span>;
+<span class="ty">boolean</span> validEmail = email.<span class="fn">matches</span>(
+    <span class="str">"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"</span>);
+
+<span class="ty">String</span> phone = <span class="str">"9876543210"</span>;
+<span class="ty">boolean</span> validPhone = phone.<span class="fn">matches</span>(<span class="str">"[6-9]\\d{9}"</span>);
+
+<span class="ty">String</span> zip = <span class="str">"440001"</span>;
+<span class="ty">boolean</span> validZip = zip.<span class="fn">matches</span>(<span class="str">"\\d{6}"</span>);</pre>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ ITERATOR ============ -->
+    <div id="iterator" class="section">
+      <div class="section-title">🔁 Iterator & List Sorting</div>
+      <div class="grid grid-2">
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(0,212,255,0.1)">🔁</div>
+            <div>
+              <div class="card-title">Iterator</div>
+              <div class="card-sub">Safe traversal with remove support</div>
+            </div>
+          </div>
+          <div class="def-box">An <code>Iterator</code> lets you traverse any collection and <strong>safely remove
+              elements while iterating</strong> (unlike for-each which throws ConcurrentModificationException).</div>
+          <pre><span class="kw">import</span> java.util.*;
+
+<span class="ty">ArrayList</span>&lt;<span class="ty">String</span>&gt; list =
+    <span class="kw">new</span> <span class="ty">ArrayList</span>&lt;&gt;(List.<span class="fn">of</span>(<span class="str">"A"</span>,<span class="str">"B"</span>,<span class="str">"C"</span>,<span class="str">"D"</span>));
+
+<span class="cm">// Get iterator</span>
+<span class="ty">Iterator</span>&lt;<span class="ty">String</span>&gt; it = list.<span class="fn">iterator</span>();
+
+<span class="cm">// Loop: hasNext() → next()</span>
+<span class="kw">while</span> (it.<span class="fn">hasNext</span>()) {
+    <span class="ty">String</span> s = it.<span class="fn">next</span>();
+    <span class="kw">if</span> (s.<span class="fn">equals</span>(<span class="str">"B"</span>)) {
+        it.<span class="fn">remove</span>(); <span class="cm">// SAFE remove during iteration!</span>
+    }
+}
+<span class="cm">// list: ["A", "C", "D"]</span>
+
+<span class="cm">// ListIterator — can go backward too</span>
+<span class="ty">ListIterator</span>&lt;<span class="ty">String</span>&gt; li = list.<span class="fn">listIterator</span>();
+<span class="kw">while</span> (li.<span class="fn">hasNext</span>())    { li.<span class="fn">next</span>(); }
+<span class="kw">while</span> (li.<span class="fn">hasPrevious</span>()){ li.<span class="fn">previous</span>(); }
+
+<span class="cm">// Map iterator</span>
+<span class="ty">Iterator</span>&lt;<span class="ty">Map.Entry</span>&lt;<span class="ty">String</span>,<span class="ty">Integer</span>&gt;&gt; mi =
+    map.<span class="fn">entrySet</span>().<span class="fn">iterator</span>();</pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(255,107,107,0.1)">🔃</div>
+            <div>
+              <div class="card-title">List Sorting</div>
+              <div class="card-sub">Comparable, Comparator, sort()</div>
+            </div>
+          </div>
+          <pre><span class="ty">List</span>&lt;<span class="ty">Integer</span>&gt; nums = <span class="kw">new</span> <span class="ty">ArrayList</span>&lt;&gt;(List.<span class="fn">of</span>(<span class="num">3</span>,<span class="num">1</span>,<span class="num">4</span>,<span class="num">2</span>));
+
+<span class="cm">// Natural sort (ascending)</span>
+<span class="ty">Collections</span>.<span class="fn">sort</span>(nums);          <span class="cm">// [1,2,3,4]</span>
+
+<span class="cm">// Reverse sort</span>
+<span class="ty">Collections</span>.<span class="fn">sort</span>(nums, <span class="ty">Collections</span>.reverseOrder());
+
+<span class="cm">// Lambda comparator</span>
+nums.<span class="fn">sort</span>((a, b) -> b - a);   <span class="cm">// descending</span>
+
+<span class="cm">// Sort strings by length</span>
+<span class="ty">List</span>&lt;<span class="ty">String</span>&gt; words = <span class="kw">new</span> <span class="ty">ArrayList</span>&lt;&gt;(List.<span class="fn">of</span>(<span class="str">"banana"</span>,<span class="str">"fig"</span>,<span class="str">"apple"</span>));
+words.<span class="fn">sort</span>(<span class="ty">Comparator</span>.<span class="fn">comparingInt</span>(<span class="ty">String</span>::length));
+<span class="cm">// [fig, apple, banana]</span>
+
+<span class="cm">// Custom object sort (Comparator)</span>
+<span class="ty">List</span>&lt;<span class="cl">Person</span>&gt; people = ...;
+people.<span class="fn">sort</span>(<span class="ty">Comparator</span>.<span class="fn">comparing</span>(p -> p.name));
+<span class="cm">// or multi-level sort</span>
+people.<span class="fn">sort</span>(<span class="ty">Comparator</span>.<span class="fn">comparing</span>(<span class="cl">Person</span>::getName)
+    .<span class="fn">thenComparing</span>(<span class="cl">Person</span>::getAge));</pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(168,255,120,0.1)">🏆</div>
+            <div>
+              <div class="card-title">Comparable Interface</div>
+              <div class="card-sub">Make your class sortable</div>
+            </div>
+          </div>
+          <pre><span class="cm">// Implement Comparable to make class sortable</span>
+<span class="kw">class</span> <span class="cl">Student</span> <span class="kw">implements</span> <span class="cl">Comparable</span>&lt;<span class="cl">Student</span>&gt; {
+    <span class="ty">String</span> name;
+    <span class="ty">int</span>    grade;
+
+    <span class="op">@Override</span>
+    <span class="kw">public int</span> <span class="fn">compareTo</span>(<span class="cl">Student</span> other) {
+        <span class="kw">return</span> <span class="kw">this</span>.grade - other.grade; <span class="cm">// asc grade</span>
+        <span class="cm">// return other.grade - this.grade; // desc</span>
+        <span class="cm">// return this.name.compareTo(other.name); // alpha</span>
+    }
+}
+
+<span class="cm">// Now can use Collections.sort() directly</span>
+<span class="ty">List</span>&lt;<span class="cl">Student</span>&gt; students = ...;
+<span class="ty">Collections</span>.<span class="fn">sort</span>(students); <span class="cm">// uses compareTo</span>
+<span class="ty">TreeSet</span>&lt;<span class="cl">Student</span>&gt; ts = <span class="kw">new</span> <span class="ty">TreeSet</span>&lt;&gt;(students); <span class="cm">// works!</span></pre>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ ADVANCED ============ -->
+    <div id="advanced" class="section">
+      <div class="section-title">🚀 Advanced Topics</div>
+      <div class="grid grid-2">
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(0,212,255,0.1)">📐</div>
+            <div>
+              <div class="card-title">Java Math Class</div>
+              <div class="card-sub">java.lang.Math — no import needed</div>
+            </div>
+          </div>
+          <pre><span class="cm">// Rounding</span>
+Math.<span class="fn">round</span>(<span class="num">3.7</span>)      <span class="cm">// 4</span>
+Math.<span class="fn">floor</span>(<span class="num">3.9</span>)      <span class="cm">// 3.0 (round down)</span>
+Math.<span class="fn">ceil</span>(<span class="num">3.1</span>)       <span class="cm">// 4.0 (round up)</span>
+
+<span class="cm">// Power / root</span>
+Math.<span class="fn">pow</span>(<span class="num">2</span>, <span class="num">10</span>)     <span class="cm">// 1024.0</span>
+Math.<span class="fn">sqrt</span>(<span class="num">144</span>)      <span class="cm">// 12.0</span>
+Math.<span class="fn">cbrt</span>(<span class="num">27</span>)       <span class="cm">// 3.0 (cube root)</span>
+
+<span class="cm">// Min / Max / Abs</span>
+Math.<span class="fn">max</span>(<span class="num">10</span>, <span class="num">20</span>)    <span class="cm">// 20</span>
+Math.<span class="fn">min</span>(<span class="num">10</span>, <span class="num">20</span>)    <span class="cm">// 10</span>
+Math.<span class="fn">abs</span>(-<span class="num">99</span>)       <span class="cm">// 99</span>
+
+<span class="cm">// Logs</span>
+Math.<span class="fn">log</span>(<span class="num">10</span>)        <span class="cm">// natural log</span>
+Math.<span class="fn">log10</span>(<span class="num">1000</span>)   <span class="cm">// 3.0</span>
+
+<span class="cm">// Trig (radians)</span>
+Math.<span class="fn">sin</span>(Math.PI/<span class="num">2</span>)  <span class="cm">// 1.0</span>
+Math.<span class="fn">cos</span>(<span class="num">0</span>)           <span class="cm">// 1.0</span>
+Math.PI                 <span class="cm">// 3.14159...</span>
+Math.E                  <span class="cm">// 2.71828...</span>
+
+<span class="cm">// Random number [0.0, 1.0)</span>
+Math.<span class="fn">random</span>()         <span class="cm">// 0.0 to 0.999</span>
+<span class="cm">// Random int 0-99:</span>
+(<span class="ty">int</span>)(Math.<span class="fn">random</span>() * <span class="num">100</span>)</pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(255,107,107,0.1)">📝</div>
+            <div>
+              <div class="card-title">StringBuilder & StringBuffer</div>
+            </div>
+          </div>
+          <div class="def-box"><code>StringBuilder</code> is mutable — modify without creating new objects. Much faster
+            than <code>+</code> concatenation in loops. <code>StringBuffer</code> is thread-safe version.</div>
+          <pre><span class="ty">StringBuilder</span> sb = <span class="kw">new</span> <span class="ty">StringBuilder</span>();
+
+sb.<span class="fn">append</span>(<span class="str">"Hello"</span>);
+sb.<span class="fn">append</span>(<span class="str">" "</span>);
+sb.<span class="fn">append</span>(<span class="str">"World"</span>);
+
+sb.<span class="fn">insert</span>(<span class="num">5</span>, <span class="str">","</span>);       <span class="cm">// insert at index</span>
+sb.<span class="fn">delete</span>(<span class="num">0</span>, <span class="num">5</span>);        <span class="cm">// delete range</span>
+sb.<span class="fn">replace</span>(<span class="num">0</span>, <span class="num">5</span>, <span class="str">"Hi"</span>);<span class="cm">// replace range</span>
+sb.<span class="fn">reverse</span>();           <span class="cm">// reverse it</span>
+sb.<span class="fn">length</span>();            <span class="cm">// length</span>
+sb.<span class="fn">charAt</span>(<span class="num">0</span>);           <span class="cm">// char at index</span>
+sb.<span class="fn">indexOf</span>(<span class="str">"World"</span>);   <span class="cm">// find substring</span>
+sb.<span class="fn">toString</span>();          <span class="cm">// convert to String</span>
+
+<span class="cm">// Good pattern for building strings in loops</span>
+<span class="ty">StringBuilder</span> result = <span class="kw">new</span> <span class="ty">StringBuilder</span>();
+<span class="kw">for</span> (<span class="ty">int</span> i = <span class="num">0</span>; i < <span class="num">100</span>; i++) {
+    result.<span class="fn">append</span>(i).<span class="fn">append</span>(<span class="str">","</span>);
+}
+<span class="ty">String</span> s = result.<span class="fn">toString</span>();</pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(168,255,120,0.1)">🔧</div>
+            <div>
+              <div class="card-title">Collections Utility Methods</div>
+              <div class="card-sub">java.util.Collections</div>
+            </div>
+          </div>
+          <pre><span class="kw">import</span> java.util.Collections;
+
+<span class="ty">List</span>&lt;<span class="ty">Integer</span>&gt; list = <span class="kw">new</span> <span class="ty">ArrayList</span>&lt;&gt;(List.<span class="fn">of</span>(<span class="num">3</span>,<span class="num">1</span>,<span class="num">4</span>,<span class="num">1</span>,<span class="num">5</span>));
+
+<span class="ty">Collections</span>.<span class="fn">sort</span>(list);          <span class="cm">// [1,1,3,4,5]</span>
+<span class="ty">Collections</span>.<span class="fn">reverse</span>(list);       <span class="cm">// [5,4,3,1,1]</span>
+<span class="ty">Collections</span>.<span class="fn">shuffle</span>(list);       <span class="cm">// random order</span>
+<span class="ty">Collections</span>.<span class="fn">min</span>(list);           <span class="cm">// 1</span>
+<span class="ty">Collections</span>.<span class="fn">max</span>(list);           <span class="cm">// 5</span>
+<span class="ty">Collections</span>.<span class="fn">frequency</span>(list, <span class="num">1</span>); <span class="cm">// 2 (count of 1s)</span>
+<span class="ty">Collections</span>.<span class="fn">fill</span>(list, <span class="num">0</span>);      <span class="cm">// all zeros</span>
+<span class="ty">Collections</span>.<span class="fn">nCopies</span>(<span class="num">5</span>, <span class="str">"x"</span>);   <span class="cm">// [x,x,x,x,x]</span>
+<span class="ty">Collections</span>.<span class="fn">swap</span>(list, <span class="num">0</span>, <span class="num">4</span>);  <span class="cm">// swap index 0↔4</span>
+<span class="ty">Collections</span>.<span class="fn">disjoint</span>(listA,listB); <span class="cm">// no common?</span>
+
+<span class="cm">// Unmodifiable wrappers</span>
+<span class="ty">List</span>&lt;<span class="ty">Integer</span>&gt; locked = <span class="ty">Collections</span>.<span class="fn">unmodifiableList</span>(list);
+<span class="ty">Map</span>&lt;<span class="ty">String</span>,<span class="ty">Integer</span>&gt; lockedMap = <span class="ty">Collections</span>.<span class="fn">unmodifiableMap</span>(map);
+
+<span class="cm">// Synchronized wrappers (thread-safe)</span>
+<span class="ty">List</span>&lt;<span class="ty">Integer</span>&gt; synced = <span class="ty">Collections</span>.<span class="fn">synchronizedList</span>(list);</pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(255,209,102,0.1)">💡</div>
+            <div>
+              <div class="card-title">Java Annotations</div>
+            </div>
+          </div>
+          <pre><span class="cm">// Built-in annotations</span>
+<span class="op">@Override</span>         <span class="cm">// must match parent method</span>
+<span class="op">@Deprecated</span>       <span class="cm">// warns: don't use this</span>
+<span class="op">@SuppressWarnings</span>(<span class="str">"unchecked"</span>) <span class="cm">// suppress warning</span>
+<span class="op">@FunctionalInterface</span> <span class="cm">// must have exactly one abstract method</span>
+
+<span class="cm">// Example usage</span>
+<span class="kw">class</span> <span class="cl">Animal</span> {
+    <span class="op">@Deprecated</span>
+    <span class="kw">public void</span> <span class="fn">oldSound</span>() { }
+
+    <span class="kw">public void</span> <span class="fn">sound</span>() { }
+}
+
+<span class="kw">class</span> <span class="cl">Dog</span> <span class="kw">extends</span> <span class="cl">Animal</span> {
+    <span class="op">@Override</span>
+    <span class="kw">public void</span> <span class="fn">sound</span>() {
+        System.out.<span class="fn">println</span>(<span class="str">"Woof"</span>);
+    }
+}
+
+<span class="cm">// Custom annotation</span>
+<span class="kw">public @interface</span> <span class="cl">MyAnnotation</span> {
+    <span class="ty">String</span> <span class="fn">value</span>() <span class="kw">default</span> <span class="str">"default"</span>;
+}</pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(199,125,255,0.1)">📡</div>
+            <div>
+              <div class="card-title">Java Algorithms (Collections)</div>
+            </div>
+          </div>
+          <pre><span class="cm">// Binary search (list must be sorted first!)</span>
+<span class="ty">List</span>&lt;<span class="ty">Integer</span>&gt; sorted = List.<span class="fn">of</span>(<span class="num">1</span>,<span class="num">3</span>,<span class="num">5</span>,<span class="num">7</span>,<span class="num">9</span>);
+<span class="ty">int</span> idx = <span class="ty">Collections</span>.<span class="fn">binarySearch</span>(sorted, <span class="num">5</span>); <span class="cm">// 2</span>
+
+<span class="cm">// Arrays binary search</span>
+<span class="ty">int</span>[] arr = {<span class="num">1</span>,<span class="num">3</span>,<span class="num">5</span>,<span class="num">7</span>,<span class="num">9</span>};
+<span class="ty">Arrays</span>.<span class="fn">binarySearch</span>(arr, <span class="num">7</span>); <span class="cm">// 3</span>
+
+<span class="cm">// Streams sorting</span>
+<span class="ty">List</span>&lt;<span class="ty">Integer</span>&gt; asc = nums.<span class="fn">stream</span>()
+    .<span class="fn">sorted</span>().<span class="fn">collect</span>(<span class="ty">Collectors</span>.<span class="fn">toList</span>());
+<span class="ty">List</span>&lt;<span class="ty">Integer</span>&gt; desc = nums.<span class="fn">stream</span>()
+    .<span class="fn">sorted</span>(<span class="ty">Comparator</span>.reverseOrder())
+    .<span class="fn">collect</span>(<span class="ty">Collectors</span>.<span class="fn">toList</span>());
+
+<span class="cm">// Group by (very powerful!)</span>
+<span class="ty">Map</span>&lt;<span class="ty">Integer</span>, <span class="ty">List</span>&lt;<span class="ty">String</span>&gt;&gt; byLen = words.<span class="fn">stream</span>()
+    .<span class="fn">collect</span>(<span class="ty">Collectors</span>.<span class="fn">groupingBy</span>(<span class="ty">String</span>::length));
+
+<span class="cm">// Count by condition</span>
+<span class="ty">long</span> count = nums.<span class="fn">stream</span>().<span class="fn">filter</span>(n -> n > <span class="num">5</span>).<span class="fn">count</span>();</pre>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:rgba(0,212,255,0.1)">🏷️</div>
+            <div>
+              <div class="card-title">Records (Java 16+)</div>
+              <div class="card-sub">Compact data classes</div>
+            </div>
+          </div>
+          <div class="def-box">Records are compact, immutable data classes. Java auto-generates: constructor, getters,
+            equals(), hashCode(), toString().</div>
+          <pre><span class="cm">// Old way: 20+ lines of boilerplate</span>
+<span class="cm">// New way with record: 1 line!</span>
+<span class="kw">record</span> <span class="cl">Point</span>(<span class="ty">int</span> x, <span class="ty">int</span> y) {}
+
+<span class="cl">Point</span> p = <span class="kw">new</span> <span class="cl">Point</span>(<span class="num">3</span>, <span class="num">4</span>);
+p.<span class="fn">x</span>();           <span class="cm">// 3 (accessor method)</span>
+p.<span class="fn">y</span>();           <span class="cm">// 4</span>
+p.<span class="fn">toString</span>();    <span class="cm">// "Point[x=3, y=4]"</span>
+
+<span class="cm">// With custom constructor</span>
+<span class="kw">record</span> <span class="cl">Person</span>(<span class="ty">String</span> name, <span class="ty">int</span> age) {
+    <span class="cm">// Compact constructor (validation)</span>
+    <span class="cl">Person</span> {
+        <span class="kw">if</span> (age < <span class="num">0</span>) <span class="kw">throw</span> <span class="kw">new</span> <span class="cl">IllegalArgumentException</span>();
+    }
+    <span class="cm">// Custom method</span>
+    <span class="kw">boolean</span> <span class="fn">isAdult</span>() { <span class="kw">return</span> age >= <span class="num">18</span>; }
+}</pre>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- end container -->
+
+</body>
+<script>
+  function showSection(id, btn) {
+    document.querySelectorAll('.section').forEach(sec => {
+      sec.classList.remove('active');
+    });
+    document.getElementById(id).classList.add('active');
+
+    document.querySelectorAll('nav button').forEach(b => {
+      b.classList.remove('active');
+    });
+    btn.classList.add('active');
+  }
+
+  function filterCards(inputId, gridId) {
+    let input = document.getElementById(inputId).value.toLowerCase();
+    let cards = document.querySelectorAll(`#${gridId} .card`);
+
+    cards.forEach(card => {
+      let text = card.getAttribute("data-search");
+      card.style.display = text.includes(input) ? "block" : "none";
+    });
+  }
+
+  function toggleDS(id) {
+    let card = document.getElementById(id);
+    let body = card.querySelector('.ds-body');
+    let chevron = card.querySelector('.ds-chevron');
+
+    body.classList.toggle('open');
+    chevron.classList.toggle('open');
+  }
+</script>
+
+</html>
